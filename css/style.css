@@ -1,0 +1,73 @@
+/*Cores*/
+/*Material pallet*/
+body {
+  background-color: #455A64; }
+
+* {
+  margin: 0 auto;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif; }
+
+.maxWidth {
+  max-width: 1280px;
+  width: 100%; }
+
+.maxHeight {
+  min-height: 90vh;
+  height: 100%; }
+
+.content {
+  background-color: #FFFFFF; }
+
+.padding {
+  padding: 5px;
+  box-sizing: border-box; }
+
+.padding-larger {
+  padding: 10px;
+  box-sizing: border-box; }
+
+.border-5-top {
+  border-bottom: 5px solid #FF5252; }
+
+.border-5-bottom {
+  border-bottom: 5px solid #FF5252; }
+
+.logo {
+  max-width: 350px;
+  width: 100%; }
+
+.bold {
+  font-weight: bold; }
+
+.margin-2 {
+  margin: 2px; }
+
+.margin-5-bottom {
+  margin-bottom: 5px; }
+
+.footer {
+  background-color: #607D8B;
+  color: #FFF; }
+  .footer a {
+    color: #FFF;
+    font-weight: bold;
+    text-decoration: underline; }
+
+.icones-menu a {
+  color: #212121;
+  text-decoration: none;
+  -webkit-filter: grayscale(80%);
+  filter: grayscale(80%); }
+  .icones-menu a:hover {
+    -webkit-filter: grayscale(0%);
+    filter: grayscale(0%); }
+  .icones-menu a img {
+    max-width: 64px;
+    width: 100%;
+    cursor: pointer; }
+
+.clear {
+  clear: both; }
+
+/*# sourceMappingURL=style.css.map */
