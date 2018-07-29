@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Model;
 class Usuario {
 
     private $cod;

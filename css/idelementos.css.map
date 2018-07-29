@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,QAAQ;EACJ,UAAU,EAAE,IAAI;EAEhB,WAAE;IACE,KAAK,EAAE,GAAG",
+"sources": ["idelementos.scss"],
+"names": [],
+"file": "idelementos.css"
+}

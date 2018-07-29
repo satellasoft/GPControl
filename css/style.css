@@ -3,6 +3,11 @@
 body {
   background-color: #455A64; }
 
+#ulErros {
+  list-style: none; }
+  #ulErros li {
+    color: red; }
+
 * {
   margin: 0 auto;
   padding: 0;
@@ -27,6 +32,9 @@ body {
   padding: 10px;
   box-sizing: border-box; }
 
+.small-font {
+  font-size: 0.9em; }
+
 .border-5-top {
   border-bottom: 5px solid #FF5252; }
 
@@ -34,7 +42,7 @@ body {
   border-bottom: 5px solid #FF5252; }
 
 .logo {
-  max-width: 350px;
+  max-width: 300px;
   width: 100%; }
 
 .bold {

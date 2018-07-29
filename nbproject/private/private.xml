@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/js/gerencia-usuario-script.js</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/DAL/UsuarioDAO.php</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/UsuarioView/GerenciarUsuario.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/painel.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/home.php</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/js/script.js</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/css/style.scss</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Controller/UsuarioController.php</file>
         </group>
     </open-files>
 </project-private>

@@ -1,5 +1,6 @@
 <?php
-
+namespace App\DB;
+use PDO;
 date_default_timezone_set('America/Sao_Paulo');
 
 

@@ -1,6 +1,7 @@
 $maxWidth : 1280px;
 $smallPadding : 5px;
 $largerPadding : 10px;
+$smallFont : 0.9em;
 /*Cores*/
 $backgroundColor : #455A64;
 $contentBackground : #FFFFFF;
@@ -16,6 +17,7 @@ $secondary-text-color: #757575;
 $divider-color:        #BDBDBD;
 
 @import 'elementos';
+@import 'idelementos';
 
 
 *{
@@ -48,6 +50,10 @@ $divider-color:        #BDBDBD;
     box-sizing: border-box;
 }
 
+.small-font{
+    font-size: $smallFont;
+}
+
 .border-5-top{
     border-bottom: 5px solid $accent-color;
 }
@@ -57,7 +63,7 @@ $divider-color:        #BDBDBD;
 }
 
 .logo{
-    max-width: 350px;
+    max-width: 300px;
     width:100%;
 }
 
