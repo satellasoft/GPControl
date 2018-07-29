@@ -1,6 +1,16 @@
 
 $(document).ready(function () {
-    //ShowModal("Teste", "TESTANDO_!_@_#");
+    var result = getCookie("result");
+    DeleteCookie("result");
+    if (result == "c1") {
+        ShowModal("Sucesso", "<span class='text-success'>Usuário cadastrado com sucesso.</span>");
+    } else if (result == "c2") {
+        ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o usuário.</span>");
+    } else if (result == "e1") {
+           ShowModal("Sucesso", "<span class='text-success'>Usuário alterado com sucesso.</span>");
+    } else if (result == "e2") {
+        ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o usuário.</span>");
+    }
 });
 
 $("#btnNovoUsuario").click(function () {
@@ -52,4 +62,57 @@ function ValidateEmail(email)
 {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
+}
+
+
+function Consultar() {
+
+    if ($("#txtBuscaNome").val().length >= 3) {
+        var obj = {
+            p: $("#slBuscaPermissao").val(),
+            s: $("#slBuscaStatus").val(),
+            n: $("#txtBuscaNome").val()
+        };
+
+        $.ajax({
+            url: "App/Action/UsuarioAction.php?req=1",
+            data: obj,
+            type: "post",
+            dataType: "JSON",
+            beforeSend: function () {
+                //$("#btnBuscar").prop("disabled", true);
+            },
+            success: function (data) {
+                MontarTabela(data);
+            },
+            error: function (erro) {
+                ShowModal("ERRO", "Houve um erro ao tentar fazer uma busca.");
+                console.log(erro);
+            }
+        });
+        console.log(obj);
+    } else {
+        ShowModal("ERRO", "Informe ao menos três caracteres.");
+    }
+}
+
+function MontarTabela(data) {
+
+    //result = JSON.parse(data);
+
+    console.log(data);
+    //console.log(result);
+
+    var tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+
+    for (var i = 0; i < data.length; i++) {
+        var d = "<tr>" +
+                "<td>" + data[i].Nome + "</td>" +
+                "<td>" + data[i].Email + "</td>" +
+                "<td>" + data[i].Data + "</td>" +
+                "<td><a href='?p=gusuario&cod=" + data[i].Cod + "' class='btn btn-warning'>Editar</a></td>" +
+                "</tr>";
+        tbody.innerHTML += d;
+    }
 }

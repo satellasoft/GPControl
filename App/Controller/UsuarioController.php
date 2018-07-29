@@ -26,4 +26,31 @@ class UsuarioController {
         }
     }
 
+    function Alterar(Usuario $usuario) {
+        if (
+                strlen($usuario->getNome()) >= 4 && strlen($usuario->getNome()) <= 100 &&
+                strlen($usuario->getStatus()) >= 1 && strlen($usuario->getStatus()) <= 2 &&
+                strlen($usuario->getPermissao()) >= 1 && strlen($usuario->getPermissao()) <= 2) {
+            return $this->usuarioDAO->Alterar($usuario);
+        } else {
+            return false;
+        }
+    }
+
+    public function RetornarUsuariosBusca(int $permissao, int $status, string $nome) {
+        if ($permissao > 0 && $status > 0 && strlen($nome) >= 3) {
+            return $this->usuarioDAO->RetornarUsuariosBusca($permissao, $status, $nome);
+        } else {
+            return null;
+        }
+    }
+
+    public function RetornaEdicaoCod(int $cod) {
+        if ($cod > 0) {
+            return $this->usuarioDAO->RetornaEdicaoCod($cod);
+        } else {
+            return null;
+        }
+    }
+
 }

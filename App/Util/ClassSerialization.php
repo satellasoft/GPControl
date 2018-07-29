@@ -1,4 +1,14 @@
 <?php
+namespace App\Util;
+ use ReflectionClass;
+
+/**
+ * PDO PHP Persistence Class
+ * https://github.com/victortassinari/
+ *
+ *
+ * @author Victor Tassinari - victortassinarix@gmail.com
+ */
 
 class ClassSerialization {
 

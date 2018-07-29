@@ -26,19 +26,46 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
         if ($usuarioController->Cadastrar($usuario)) {
             ?>
             <script>
-                ShowModal("Sucesso", "<span class='text-success'>Usuário cadastrado com sucesso.</span>");
+                setCookie("result", "c1", 1);
+                document.location.href = "?p=gusuario";
             </script>
             <?php
         } else {
             ?>
             <script>
-                ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o usuário.</span>");
+                setCookie("result", "c2", 1);
+                document.location.href = "?p=gusuario";
             </script>
             <?php
         }
     } else {
         //Editar
+            if ($usuarioController->Alterar($usuario)) {
+            ?>
+            <script>
+                setCookie("result", "e1", 1);
+                document.location.href = "?p=gusuario";
+            </script>
+            <?php
+        } else {
+            ?>
+            <script>
+                setCookie("result", "e2", 1);
+                document.location.href = "?p=gusuario";
+            </script>
+            <?php
+        }
     }
+}
+
+if (filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT)) {
+    $usuario = $usuarioController->RetornaEdicaoCod(filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT));
+
+    $nome = $usuario->getNome();
+    $email = $usuario->getEmail();
+    $status = $usuario->getStatus();
+    $permissao = $usuario->getPermissao();
+    $editando = true;
 }
 ?>
 
@@ -57,7 +84,7 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
 
             <div class="form-group grid-50 mobile-grid-100">
                 <label for="txtEmail">E-mail</label>
-                <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="email@dominio.com" value="<?= $email; ?>">
+                <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="email@dominio.com" value="<?= $email; ?>" <?= ($editando ? "disabled='true'" : ""); ?>>
             </div>
         </div>
 
@@ -97,4 +124,49 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
         </div>
     </form>
 </div>
+
+<hr>
+<h2>Consultar</h2>
+
+<div>
+    <div class="form-group grid-60 mobile-grid-100">
+        <label for="txtBuscaNome">Nome usuário</label>
+        <input type="text" class="form-control" id="txtBuscaNome">
+    </div>
+
+    <div class="form-group grid-20 mobile-grid-100">
+        <label for="slBuscaStatus">Status</label>
+        <select class="custom-select" id="slBuscaStatus">
+            <option value="1">Ativo</option>
+            <option value="2">Bloqueado</option>
+        </select>
+    </div>
+
+    <div class="form-group grid-20 mobile-grid-100">
+        <label for="slBuscaPermissao">Permissão</label>
+        <select class="custom-select" id="slBuscaPermissao">
+            <option value="1">Administrador</option>
+            <option value="2">Comum</option>
+        </select>
+    </div>
+
+    <div class="form-group grid-100 text-right">
+        <button class="btn btn-success" onclick="Consultar();" id="btnBuscar">Buscar</button>
+    </div>
+</div>
+
+<table class="table table-hover table-striped table-responsive-lg">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+    </tbody>
+</table>
+
+
 <script src="js/gerencia-usuario-script.js" type="text/javascript"></script>
