@@ -21,7 +21,7 @@ class UsuarioDAO {
             $sql = "INSERT INTO usuario (nome, email, senha, status, permissao, data) VALUES (:nome, :email, :senha, :status, :permissao, :data)";
             $params = array(
                 ":nome" => $usuario->getNome(),
-                ":email" => $usuario->getEmail(),
+                ":email" => strtolower($usuario->getEmail()),
                 ":senha" => md5($usuario->getSenha()),
                 ":status" => $usuario->getStatus(),
                 ":permissao" => $usuario->getPermissao(),
@@ -37,8 +37,8 @@ class UsuarioDAO {
             return false;
         }
     }
-    
-        function Alterar(Usuario $usuario) {
+
+    function Alterar(Usuario $usuario) {
         try {
             $sql = "UPDATE usuario SET nome = :nome, status = :status, permissao = :permissao WHERE cod = :cod";
             $params = array(
@@ -107,7 +107,7 @@ class UsuarioDAO {
             $usuario->setEmail($dr["email"]);
             $usuario->setStatus($dr["status"]);
             $usuario->setPermissao($dr["permissao"]);
-            
+
             return $usuario;
         } catch (PDOException $ex) {
             if ($this->debug) {
@@ -115,6 +115,28 @@ class UsuarioDAO {
             }
 
             return null;
+        }
+    }
+
+    public function VerificaEmailExiste(string $email) {
+        try {
+            $sql = "SELECT cod FROM usuario WHERE UPPER(email) = :email";
+            $param = array(
+                ":email" => strtolower($email)
+            );
+            $dt = $this->pdo->ExecuteQueryOneRow($sql, $param);
+
+            if ($dt["cod"] == null) {//Não existe
+                return 1;
+            } else {
+                return -1;
+            }
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+
+            return -10;
         }
     }
 

@@ -7,7 +7,7 @@ $(document).ready(function () {
     } else if (result == "c2") {
         ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o usuário.</span>");
     } else if (result == "e1") {
-           ShowModal("Sucesso", "<span class='text-success'>Usuário alterado com sucesso.</span>");
+        ShowModal("Sucesso", "<span class='text-success'>Usuário alterado com sucesso.</span>");
     } else if (result == "e2") {
         ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o usuário.</span>");
     }
@@ -15,6 +15,10 @@ $(document).ready(function () {
 
 $("#btnNovoUsuario").click(function () {
     $("#dvFormUsuario").toggle("slow");
+});
+
+$("#txtEmail").focusout(function () {
+    ValidarEmail();
 });
 
 $("#frmGerenciaUsuario").submit(function (event) {
@@ -58,13 +62,6 @@ function Validar() {
     }
 }
 
-function ValidateEmail(email)
-{
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
-}
-
-
 function Consultar() {
 
     if ($("#txtBuscaNome").val().length >= 3) {
@@ -80,7 +77,7 @@ function Consultar() {
             type: "post",
             dataType: "JSON",
             beforeSend: function () {
-                //$("#btnBuscar").prop("disabled", true);
+                $("#btnBuscar").prop("disabled", true);
             },
             success: function (data) {
                 MontarTabela(data);
@@ -115,4 +112,49 @@ function MontarTabela(data) {
                 "</tr>";
         tbody.innerHTML += d;
     }
+}
+
+function ValidarEmail() {
+    if (ValidateEmail($("#txtEmail").val())) {
+
+        var obj = {
+            e: $("#txtEmail").val()
+        };
+
+        $.ajax({
+            url: "App/Action/UsuarioAction.php?req=2",
+            data: obj,
+            type: "post",
+            dataType: "HTML",
+
+            success: function (data) {
+                if (data == 1) {
+                    $("#btnCadastrar").prop("disabled", false);
+                    $("#txtEmail").css("border", "1px solid green");
+                } else {
+                    ShowModal("ATENÇÃO", "O e-mail informado já está em uso.");
+                    $("#btnCadastrar").prop("disabled", true);
+                    $("#txtEmail").css("border", "1px solid red");
+                }
+                console.log(data);
+            },
+            error: function (erro) {
+                $("#btnCadastrar").prop("disabled", true);
+                ShowModal("ERRO", "Houve um erro ao tentar verificar se o e-mail está em uso, atualize a página e tente novamente.");
+                console.log(erro);
+            }
+        });
+        console.log(obj);
+    } else {
+        $("#btnCadastrar").prop("disabled", true);
+        $("#txtEmail").css("border", "1px solid red");
+        ShowModal("ATENÇÃO", "Informe um e-mail válido");
+    }
+}
+
+
+function ValidateEmail(email)
+{
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
 }

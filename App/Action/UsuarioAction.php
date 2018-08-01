@@ -6,6 +6,11 @@ $req = filter_input(INPUT_GET, "req", FILTER_SANITIZE_NUMBER_INT);
 use App\Controller\UsuarioController;
 use App\Util\ClassSerialization;
 
+/*
+ * 1 = Realiza uma consulta
+ * 2 = Verifica se o e-mail existe
+ */
+
 switch ($req) {
     case 1:
         $permissao = filter_input(INPUT_POST, "p", FILTER_SANITIZE_NUMBER_INT);
@@ -17,5 +22,11 @@ switch ($req) {
 
         $data = $usuarioController->RetornarUsuariosBusca($permissao, $status, $nome);
         echo $classSerialization->serialize($data);
+        break;
+
+    case 2:
+        $email = filter_input(INPUT_POST, "e", FILTER_SANITIZE_STRING);
+        $usuarioController = new UsuarioController();
+        echo $usuarioController->VerificaEmailExiste($email);
         break;
 }

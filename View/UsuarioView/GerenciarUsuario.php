@@ -115,7 +115,7 @@ if (filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT)) {
                 <div class="alert alert-warning" id="dvResult">Preencha corretamente todos os campos</div>
             </div>
             <div class="form-group grid-40 mobile-grid-100">
-                <button type="submit" class="btn btn-success"><?= $editando ? "Editar" : "Cadastrar" ?></button>
+                <button type="submit" class="btn btn-success" <?= $editando ? "false" : "disabled='true'" ?> id="btnCadastrar"><?= $editando ? "Editar" : "Cadastrar" ?></button>
             </div>
             <div class="clear"></div>
         </div>

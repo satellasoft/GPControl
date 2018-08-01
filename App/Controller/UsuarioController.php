@@ -19,7 +19,8 @@ class UsuarioController {
                 strlen($usuario->getEmail()) >= 1 && strlen($usuario->getEmail()) <= 100 &&
                 strlen($usuario->getSenha()) >= 7 && strlen($usuario->getSenha()) <= 25 &&
                 strlen($usuario->getStatus()) >= 1 && strlen($usuario->getStatus()) <= 2 &&
-                strlen($usuario->getPermissao()) >= 1 && strlen($usuario->getPermissao()) <= 2) {
+                strlen($usuario->getPermissao()) >= 1 && strlen($usuario->getPermissao()) <= 2 &&
+                $this->VerificaEmailExiste($usuario->getEmail()) == 1) {
             return $this->usuarioDAO->Cadastrar($usuario);
         } else {
             return false;
@@ -50,6 +51,14 @@ class UsuarioController {
             return $this->usuarioDAO->RetornaEdicaoCod($cod);
         } else {
             return null;
+        }
+    }
+
+    public function VerificaEmailExiste(string $email) {
+        if (strlen($email) >= 5) {
+            return $this->usuarioDAO->VerificaEmailExiste($email);
+        } else {
+            return -10;
         }
     }
 

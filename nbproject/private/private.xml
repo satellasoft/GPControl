@@ -6,8 +6,7 @@
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/js/gerencia-usuario-script.js</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/DAL/UsuarioDAO.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/UsuarioView/GerenciarUsuario.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/painel.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/js/script.js</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Action/UsuarioAction.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/css/style.scss</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Controller/UsuarioController.php</file>
         </group>
