@@ -140,4 +140,33 @@ class UsuarioDAO {
         }
     }
 
+    public function Autenticar(string $email, string $senha) {
+        try {
+            $sql = "SELECT cod, permissao FROM usuario WHERE LOWER(email) = :email AND senha = :senha AND status = :status";
+            $params = array(
+                ":email" => strtolower($email),
+                ":senha" => md5($senha),
+                ":status" => 1//ativo
+            );
+
+            $dr = $this->pdo->ExecuteQueryOneRow($sql, $params);
+
+            if (!is_null($dr["cod"])) {
+                $arr = array(
+                    "cod" => $dr["cod"],
+                    "permissao" => $dr["permissao"]
+                );
+
+                return $arr;
+            } else {
+                return null;
+            }
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
 }
