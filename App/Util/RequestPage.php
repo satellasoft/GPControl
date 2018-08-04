@@ -7,15 +7,13 @@ $pagina = filter_input(INPUT_GET, "p", FILTER_SANITIZE_STRING);
 
 $arrayPaginas = array(
     "home" => "View/home.php", //Página inicial
-    
     //Usuários
-     "gusuario" => "View/UsuarioView/GerenciarUsuario.php", 
-    
-     //Categorias
-     "gcategoria" => "View/CategoriaView/GerenciarCategoria.php", 
-    
-     //Projetos
-     "gprojeto" => "View/ProjetoView/GerenciarProjeto.php", 
+    "gusuario" => "View/UsuarioView/GerenciarUsuario.php",
+    //Categorias
+    "gcategoria" => "View/CategoriaView/GerenciarCategoria.php",
+    //Projetos
+    "gprojeto" => "View/ProjetoView/GerenciarProjeto.php",
+    "gvisualizaprojeto" => "View/ProjetoView/VisualizarProjeto.php"
 );
 
 if ($pagina) {

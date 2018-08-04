@@ -7,7 +7,34 @@ class ProjetoViewConsulta {
     private $cod;
     private $nome;
     private $data;
+    private $descricao;
+    private $status;
     private $usuarioNome;
+    private $thumb;
+
+    function getThumb() {
+        return $this->thumb;
+    }
+
+    function setThumb($thumb) {
+        $this->thumb = $thumb;
+    }
+
+    function getDescricao() {
+        return $this->descricao;
+    }
+
+    function setDescricao($descricao) {
+        $this->descricao = $descricao;
+    }
+
+    function getStatus() {
+        return $this->status;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
+    }
 
     function getCod() {
         return $this->cod;

@@ -39,6 +39,27 @@ class ProjetoDAO {
         }
     }
 
+    public function Alterar(Projeto $projeto) {
+
+        try {
+            $sql = "UPDATE projeto SET nome = :nome, descricao = :descricao, status = :status WHERE cod = :cod";
+            $params = array(
+                ":nome" => $projeto->getNome(),
+                ":descricao" => $projeto->getDescricao(),
+                ":status" => $projeto->getStatus(),
+                ":cod" => $projeto->getCod()
+            );
+
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+
+            return false;
+        }
+    }
+
     public function RetornarTodosStatus(int $status) {
         try {
             $sql = "SELECT p.cod, p.nome, p.data, u.nome as unome FROM projeto p INNER JOIN usuario u ON u.cod = p.usuario_cod WHERE p.status = :status";
@@ -65,6 +86,51 @@ class ProjetoDAO {
                 echo "ERRO: {$ex->getMessage()}";
             }
 
+            return null;
+        }
+    }
+
+    public function RetornarCod(int $cod) {
+        try {
+            $sql = "SELECT nome, descricao, status FROM projeto WHERE cod = :cod";
+            $param = array(":cod" => $cod);
+
+            $dr = $this->pdo->ExecuteQueryOneRow($sql, $param);
+            $projetoViewConsulta = new ProjetoViewConsulta();
+
+            $projetoViewConsulta->setNome($dr["nome"]);
+            $projetoViewConsulta->setStatus($dr["status"]);
+            $projetoViewConsulta->setDescricao($dr["descricao"]);
+
+            return $projetoViewConsulta;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
+    public function RetornarCompletoCod(int $cod) {
+        try {
+            $sql = "SELECT p.nome, p.descricao, p.thumb, p.data, p.status, u.nome as unome FROM projeto p INNER JOIN usuario u ON u.cod = p.usuario_cod WHERE p.cod = :cod";
+            $param = array(":cod" => $cod);
+
+            $dr = $this->pdo->ExecuteQueryOneRow($sql, $param);
+            $projetoViewConsulta = new ProjetoViewConsulta();
+
+            $projetoViewConsulta->setNome($dr["nome"]);
+            $projetoViewConsulta->setStatus($dr["status"]);
+            $projetoViewConsulta->setData($dr["data"]);
+            $projetoViewConsulta->setDescricao($dr["descricao"]);
+            $projetoViewConsulta->setThumb($dr["thumb"]);
+            $projetoViewConsulta->setUsuarioNome($dr["unome"]);
+
+            return $projetoViewConsulta;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
             return null;
         }
     }

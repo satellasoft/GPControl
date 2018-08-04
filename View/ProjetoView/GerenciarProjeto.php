@@ -69,7 +69,32 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
         }
     } else {
         //Editando
+
+        if ($projetoController->Alterar($projeto)) {
+            ?>
+            <script>
+                setCookie("result", "e1", 1);
+                document.location.href = "?p=gprojeto";
+            </script>
+            <?php
+        } else {
+            ?>
+            <script>
+                setCookie("result", "e2", 1);
+                document.location.href = "?p=gprojeto";
+            </script>
+            <?php
+        }
     }
+}
+
+if ($cod) {
+    $projeto = $projetoController->RetornarCod($cod);
+
+    $nome = $projeto->getNome();
+    $status = $projeto->getStatus();
+    $descricao = $projeto->getDescricao();
+    $editando = true;
 }
 
 $listaProjeto = [];
@@ -155,12 +180,12 @@ if ($statusBusca) {
             foreach ($listaProjeto as $projeto) {
                 ?>
                 <tr>
-                    <td><?=$projeto->getNome();?></td>
-                    <td><?=$projeto->getUsuarioNome();?></td>
-                    <td><?=date("d/m/Y H:i:s", strtotime($projeto->getData()));?></td>
+                    <td><?= $projeto->getNome(); ?></td>
+                    <td><?= $projeto->getUsuarioNome(); ?></td>
+                    <td><?= date("d/m/Y H:i:s", strtotime($projeto->getData())); ?></td>
                     <td>
-                        <a href='?p=gprojeto&cod=<?=$projeto->getCod();?>' class='btn btn-warning'>Editar</a>
-                        <a href='?p=gvisualizaprojeto&cod=<?=$projeto->getCod();?>' class='btn btn-info'>Visualizar</a>
+                        <a href='?p=gprojeto&cod=<?= $projeto->getCod(); ?>' class='btn btn-warning'>Editar</a>
+                        <a href='?p=gvisualizaprojeto&cod=<?= $projeto->getCod(); ?>' class='btn btn-info' target='_blank'>Visualizar</a>
                     </td>
                 </tr>
                 <?php
@@ -172,58 +197,62 @@ if ($statusBusca) {
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script>
 
-                $(document).ready(function () {
-                    CKEDITOR.replace("txtDescricao");
+                    $(document).ready(function () {
+                        CKEDITOR.replace("txtDescricao");
 
-                    var result = getCookie("result");
-                    DeleteCookie("result");
-                    if (result == "c1") {
-                        ShowModal("Sucesso", "<span class='text-success'>Projeto cadastrado com sucesso.</span>");
-                    } else if (result == "c2") {
-                        ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o Projeto.</span>");
-                    } else if (result == "c2") {
-                        ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
+                        var result = getCookie("result");
+                        DeleteCookie("result");
+                        if (result == "c1") {
+                            ShowModal("Sucesso", "<span class='text-success'>Projeto cadastrado com sucesso.</span>");
+                        } else if (result == "c2") {
+                            ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o Projeto.</span>");
+                        } else if (result == "c2") {
+                            ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
+                        } else if (result == "e1") {
+                            ShowModal("Sucesso", "<span class='text-success'>Projeto alterado com sucesso.</span>");
+                        } else if (result == "e2") {
+                            ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Projeto.</span>");
+                        }
+                    });
+
+                    $("#slBuscaStatus").change(function () {
+                        $("#slBuscaStatus").submit();
+                    });
+
+                    $("#frmGerenciaProjeto").submit(function (event) {
+                        if (!Validar()) {
+                            event.preventDefault();
+                        }
+                    });
+
+                    $("#btnNovoProjeto").click(function () {
+                        $("#dvFrmProjeto").toggle("slow");
+                    });
+
+                    function Validar() {
+                        var erros = 0;
+                        var ulErros = document.getElementById("ulErros");
+                        ulErros.innerHTML = "";
+
+                        if ($("#txtNome").val().length <= 3) {
+                            var li = document.createElement("li");
+                            li.innerHTML = "- Informe um nome válido. (min. 4 caracteres)";
+                            ulErros.appendChild(li);
+                            erros++;
+                        }
+
+                        var value = CKEDITOR.instances['txtDescricao'].getData();
+                        if (value.length <= 5) {
+                            var li = document.createElement("li");
+                            li.innerHTML = "- Informe uma descrição. (min. 6 caracteres)";
+                            ulErros.appendChild(li);
+                            erros++;
+                        }
+
+                        if (erros == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
-                });
-
-                $("#slBuscaStatus").change(function () {
-                    $("#slBuscaStatus").submit();
-                });
-
-                $("#frmGerenciaProjeto").submit(function (event) {
-                    if (!Validar()) {
-                        event.preventDefault();
-                    }
-                });
-
-                $("#btnNovoProjeto").click(function () {
-                    $("#dvFrmProjeto").toggle("slow");
-                });
-
-                function Validar() {
-                    var erros = 0;
-                    var ulErros = document.getElementById("ulErros");
-                    ulErros.innerHTML = "";
-
-                    if ($("#txtNome").val().length <= 3) {
-                        var li = document.createElement("li");
-                        li.innerHTML = "- Informe um nome válido. (min. 4 caracteres)";
-                        ulErros.appendChild(li);
-                        erros++;
-                    }
-
-                    var value = CKEDITOR.instances['txtDescricao'].getData();
-                    if (value.length <= 5) {
-                        var li = document.createElement("li");
-                        li.innerHTML = "- Informe uma descrição. (min. 6 caracteres)";
-                        ulErros.appendChild(li);
-                        erros++;
-                    }
-
-                    if (erros == 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
 </script>
