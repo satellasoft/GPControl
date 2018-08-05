@@ -56,6 +56,14 @@ class ProjetoController {
         }
     }
 
+    public function AlterarImagem(string $thumb, int $cod) {
+        if (strlen($thumb) > 0 && $cod > 0) {
+            return $this->projetoDAO->AlterarImagem($thumb, $cod);
+        } else {
+            return false;
+        }
+    }
+
 }
 
 ?>

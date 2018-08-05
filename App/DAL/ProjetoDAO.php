@@ -135,4 +135,21 @@ class ProjetoDAO {
         }
     }
 
+    public function AlterarImagem(string $thumb, int $cod) {
+        try {
+            $sql = "UPDATE projeto SET thumb = :thumb WHERE cod = :cod";
+            $params = array(
+                ":thumb" => $thumb,
+                ":cod" => $cod
+            );
+
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return false;
+        }
+    }
+
 }

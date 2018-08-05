@@ -1,30 +1,16 @@
 <?php
+
 namespace App\Util;
 
 class Upload {
 
-    private $arrFormatImages;
-    private $arrFormatFiles;
+    private $arrFormatImages = [];
 
     public function __construct() {
         $this->arrFormatImages = array(
             "image/jpeg",
             "image/jpeg",
             "image/png"
-        );
-
-        $this->arrFormatFiles = array(
-            "application/x-compressed",
-            "application/x-zip-compressed",
-            "application/zip",
-            "multipart/x-zip",
-            "application/x-compressed",
-            "application/x-gzip",
-            "text/html",
-            "application/octet-stream",
-            "application/x-gzip",
-            "multipart/x-gzip",
-            ".application/msword"
         );
     }
 
@@ -34,21 +20,13 @@ class Upload {
      * file - Is compressed files, all array formats 'arrFormatFiles' are accepted.
      */
 
-    public function LoadFile($path, $type, $file, $renameFile = true) {
+    public
+            function LoadFile($path, $type, $file, $renameFile = true) {
         $fl = $file['type'];
         $validFormat = false;
-
         if ($type == "img") {
-            foreach ($this->arrFormatImages as $result) {
-                if ($fl == $result) {
-                    $validFormat = true;
-                }
-            }
-        }
-
-        if ($type == "file") {
-            foreach ($this->arrFormatFiles as $result) {
-                if ($fl == $result) {
+            for ($i = 0; $i < count($this->arrFormatImages); $i++) {
+                if ($fl == $this->arrFormatImages[$i]) {
                     $validFormat = true;
                 }
             }
@@ -69,6 +47,8 @@ class Upload {
             } else {
                 return "";
             }
+        } else {
+            echo "Format Invalid";
         }
     }
 

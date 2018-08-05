@@ -52,6 +52,10 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
                 </script>
                 <?php
             } else {
+                $img = ("{$dirImage}/{$nomeImagem}");
+                if (file_exists($img)) {
+                    unlink($img);
+                }
                 ?>
                 <script>
                     setCookie("result", "c2", 1);
@@ -197,62 +201,62 @@ if ($statusBusca) {
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script>
 
-                    $(document).ready(function () {
-                        CKEDITOR.replace("txtDescricao");
+                $(document).ready(function () {
+                    CKEDITOR.replace("txtDescricao");
 
-                        var result = getCookie("result");
-                        DeleteCookie("result");
-                        if (result == "c1") {
-                            ShowModal("Sucesso", "<span class='text-success'>Projeto cadastrado com sucesso.</span>");
-                        } else if (result == "c2") {
-                            ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o Projeto.</span>");
-                        } else if (result == "c2") {
-                            ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
-                        } else if (result == "e1") {
-                            ShowModal("Sucesso", "<span class='text-success'>Projeto alterado com sucesso.</span>");
-                        } else if (result == "e2") {
-                            ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Projeto.</span>");
-                        }
-                    });
-
-                    $("#slBuscaStatus").change(function () {
-                        $("#slBuscaStatus").submit();
-                    });
-
-                    $("#frmGerenciaProjeto").submit(function (event) {
-                        if (!Validar()) {
-                            event.preventDefault();
-                        }
-                    });
-
-                    $("#btnNovoProjeto").click(function () {
-                        $("#dvFrmProjeto").toggle("slow");
-                    });
-
-                    function Validar() {
-                        var erros = 0;
-                        var ulErros = document.getElementById("ulErros");
-                        ulErros.innerHTML = "";
-
-                        if ($("#txtNome").val().length <= 3) {
-                            var li = document.createElement("li");
-                            li.innerHTML = "- Informe um nome válido. (min. 4 caracteres)";
-                            ulErros.appendChild(li);
-                            erros++;
-                        }
-
-                        var value = CKEDITOR.instances['txtDescricao'].getData();
-                        if (value.length <= 5) {
-                            var li = document.createElement("li");
-                            li.innerHTML = "- Informe uma descrição. (min. 6 caracteres)";
-                            ulErros.appendChild(li);
-                            erros++;
-                        }
-
-                        if (erros == 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                    var result = getCookie("result");
+                    DeleteCookie("result");
+                    if (result == "c1") {
+                        ShowModal("Sucesso", "<span class='text-success'>Projeto cadastrado com sucesso.</span>");
+                    } else if (result == "c2") {
+                        ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o Projeto.</span>");
+                    } else if (result == "c2") {
+                        ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
+                    } else if (result == "e1") {
+                        ShowModal("Sucesso", "<span class='text-success'>Projeto alterado com sucesso.</span>");
+                    } else if (result == "e2") {
+                        ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Projeto.</span>");
                     }
+                });
+
+                $("#slBuscaStatus").change(function () {
+                    $("#slBuscaStatus").submit();
+                });
+
+                $("#frmGerenciaProjeto").submit(function (event) {
+                    if (!Validar()) {
+                        event.preventDefault();
+                    }
+                });
+
+                $("#btnNovoProjeto").click(function () {
+                    $("#dvFrmProjeto").toggle("slow");
+                });
+
+                function Validar() {
+                    var erros = 0;
+                    var ulErros = document.getElementById("ulErros");
+                    ulErros.innerHTML = "";
+
+                    if ($("#txtNome").val().length <= 3) {
+                        var li = document.createElement("li");
+                        li.innerHTML = "- Informe um nome válido. (min. 4 caracteres)";
+                        ulErros.appendChild(li);
+                        erros++;
+                    }
+
+                    var value = CKEDITOR.instances['txtDescricao'].getData();
+                    if (value.length <= 5) {
+                        var li = document.createElement("li");
+                        li.innerHTML = "- Informe uma descrição. (min. 6 caracteres)";
+                        ulErros.appendChild(li);
+                        erros++;
+                    }
+
+                    if (erros == 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
 </script>
