@@ -5,6 +5,7 @@ $smallFont : 0.9em;
 /*Cores*/
 $backgroundColor : #455A64;
 $contentBackground : #FFFFFF;
+$background-gray : #fcfcfc;
 
 /*Material pallet*/
 $primary-color-dark:   #455A64;
@@ -113,4 +114,10 @@ $divider-color:        #BDBDBD;
 
 .clear{
     clear: both;
+}
+
+.bg-gray{
+    background-color: $background-gray;
+    padding:10px;
+    box-sizing: border-box;
 }

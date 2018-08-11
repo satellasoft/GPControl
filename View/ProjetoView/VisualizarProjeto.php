@@ -58,7 +58,7 @@ if ($projeto != null && $projeto->getNome() != null) {
             <a href='?p=gprojeto&cod=<?= $cod; ?>' class='btn btn-warning'style="width:100%; margin-top:10px;">Editar</a>
             <hr>
             <a href='?p=#&cod=<?= $cod; ?>' class='btn btn-dark'style="width:100%; margin-top:10px;">Permissões</a>
-            <a href='?p=#&cod=<?= $cod; ?>' class='btn btn-success'style="width:100%; margin-top:10px;">Categorias</a>
+            <a href='?p=gcategoria&cod=<?= $cod; ?>' class='btn btn-success'style="width:100%; margin-top:10px;">Categorias</a>
         </div>
 
         <div class="grid-70 mobile-grid-100">

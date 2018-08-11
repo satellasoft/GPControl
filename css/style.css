@@ -78,4 +78,9 @@ body {
 .clear {
   clear: both; }
 
+.bg-gray {
+  background-color: #fcfcfc;
+  padding: 10px;
+  box-sizing: border-box; }
+
 /*# sourceMappingURL=style.css.map */

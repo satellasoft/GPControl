@@ -7,11 +7,11 @@
         </a>
     </div>
 
-    <div class="grid-20 mobile-grid-100 margin-5-bottom">
+<!--    <div class="grid-20 mobile-grid-100 margin-5-bottom">
         <a href="?p=gcategoria">
             <img src="img/icones/categoria.png" alt=" Gerenciar Categorias" /> Gerenciar Categorias
         </a>
-    </div>
+    </div>-->
 
     <div class="grid-20 mobile-grid-100 margin-5-bottom">
         <a href="?p=gprojeto">

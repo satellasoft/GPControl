@@ -210,7 +210,7 @@ if ($statusBusca) {
                         ShowModal("Sucesso", "<span class='text-success'>Projeto cadastrado com sucesso.</span>");
                     } else if (result == "c2") {
                         ShowModal("Erro", "<span class='text-success'>Não foi possível cadastrar o Projeto.</span>");
-                    } else if (result == "c2") {
+                    } else if (result == "c3") {
                         ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
                     } else if (result == "e1") {
                         ShowModal("Sucesso", "<span class='text-success'>Projeto alterado com sucesso.</span>");
