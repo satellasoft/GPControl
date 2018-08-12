@@ -83,4 +83,15 @@ body {
   padding: 10px;
   box-sizing: border-box; }
 
+.box-permissao {
+  padding: 5px;
+  box-sizing: border-box;
+  margin-top: 10px; }
+
+.border-red {
+  border: 1px solid #FF5252; }
+
+.border-green {
+  border: 1px solid #80bf77; }
+
 /*# sourceMappingURL=style.css.map */

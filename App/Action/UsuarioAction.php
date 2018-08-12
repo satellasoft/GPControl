@@ -9,6 +9,7 @@ use App\Util\ClassSerialization;
 /*
  * 1 = Realiza uma consulta
  * 2 = Verifica se o e-mail existe
+ * 3 = Retorna usuário pelo nome
  */
 
 switch ($req) {
@@ -28,5 +29,10 @@ switch ($req) {
         $email = filter_input(INPUT_POST, "e", FILTER_SANITIZE_STRING);
         $usuarioController = new UsuarioController();
         echo $usuarioController->VerificaEmailExiste($email);
+        break;
+    case 3:
+        $nome = filter_input(INPUT_POST, "n", FILTER_SANITIZE_STRING);
+        $usuarioController = new UsuarioController();
+        echo json_encode($usuarioController->RetornarTodosAtivosResumo($nome));
         break;
 }

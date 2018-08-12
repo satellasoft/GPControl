@@ -13,7 +13,9 @@ $arrayPaginas = array(
     "gcategoria" => "View/CategoriaView/GerenciarCategoria.php",
     //Projetos
     "gprojeto" => "View/ProjetoView/GerenciarProjeto.php",
-    "gvisualizaprojeto" => "View/ProjetoView/VisualizarProjeto.php"
+    "gvisualizaprojeto" => "View/ProjetoView/VisualizarProjeto.php",
+    //Permissões
+    "gpermissao" => "View/PermissaoView/GerenciarPermissao.php"
 );
 
 if ($pagina) {

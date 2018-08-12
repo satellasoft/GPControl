@@ -169,4 +169,35 @@ class UsuarioDAO {
         }
     }
 
+    public function RetornarTodosAtivosResumo(string $nome) {
+        try {
+            $sql = "SELECT cod, nome,email, permissao FROM usuario WHERE status = 1 AND nome LIKE :nome ORDER BY nome ASC";
+            $param = array(
+                ":nome" => "%{$nome}%"
+            );
+                
+            $dt = $this->pdo->ExecuteQuery($sql, $param);
+
+            $listaUsuario = [];
+
+            foreach ($dt as $dr) {
+                $array = array(
+                    "cod" => $dr["cod"],
+                    "nome" => $dr["nome"],
+                    "email" => $dr["email"],
+                    "permissao" => $dr["permissao"]
+                );
+
+                $listaUsuario[] = $array;
+            }
+
+            return $listaUsuario;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
 }
