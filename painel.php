@@ -75,6 +75,7 @@ if (!isset($_SESSION["cod"]) || !isset($_SESSION["permissao"])) {
                 </div>
             </div>
         </div>
+        <input type="hidden" id="txtPath" value="<?= $base; ?>" />
     </body>
 </html>
 <!--

@@ -9,7 +9,10 @@ $("#txtNome").keyup(function () {
 function BuscarUsuario(nome) {
     $.ajax({
         url: "App/Action/UsuarioAction.php?req=3",
-        data: {n: nome},
+        data: {
+            n: nome,
+            pc: $("#txtProjetoCod").val()
+        },
         dataType: "JSON",
         type: "POST",
         success: function (data) {
@@ -44,9 +47,9 @@ function MontarGrid(data) {
         var tdButton = document.createElement("td");
         var button = document.createElement("button");
         button.innerText = "Adicionar";
-        button.className = "btn btn-success";
+        button.className = "btn btn-success button-grid";
         var cod = data[i].cod;
-        button.setAttribute("onclick", "AdicionarUsuario(" + cod + ");");
+        button.setAttribute("onclick", "AdicionarUsuario(" + cod + ", " + i + ");");
 
         tdButton.appendChild(button);
 
@@ -63,6 +66,36 @@ function ClearGrid() {
     document.getElementById("tbody").innerHTML = "";
 }
 
-function AdicionarUsuario(cod) {
+function AdicionarUsuario(cod, index) {
     $("#txtNome").prop("disabled", true);
+    document.getElementsByClassName("button-grid")[index].disabled = true;
+
+    var obj = {
+        pc: $("#txtProjetoCod").val(),
+        uc: cod
+    };
+
+    $.ajax({
+        url: $("#txtPath").val() + "App/Action/UsuarioProjetoAction.php?req=1",
+        data: obj,
+        dataType: "html",
+        type: "POST",
+        success: function (data) {
+            if (data > 0) {
+                $("#txtNome").prop("disabled", false);
+                ShowModal("Cadastrado", "Permissão atribuida com sucesso!");
+                var ele = document.getElementsByClassName("button-grid")[index];
+                $(ele).prop("class", "btn btn-info button-grid");
+                $(ele).innerText = "Atribuído";
+                $("#txtNome").val("");
+            } else {
+                ShowModal("Erro", "Houve um erro ao tentar atribuir a permissão.");
+            }
+            console.log(data);
+        },
+        error: function (error) {
+            console.log(error);
+            ShowModal("Erro", "Houve um erro ao tentar atribuir a permissão.");
+        }
+    });
 }

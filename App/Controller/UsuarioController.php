@@ -71,9 +71,9 @@ class UsuarioController {
         }
     }
 
-    public function RetornarTodosAtivosResumo(string $nome) {
-        if (strlen($nome) >= 3) {
-            return $this->usuarioDAO->RetornarTodosAtivosResumo($nome);
+    public function RetornarTodosAtivosResumo(string $nome, int $projetoCod) {
+        if (strlen($nome) >= 3 && $projetoCod > 0) {
+            return $this->usuarioDAO->RetornarTodosAtivosResumo($nome, $projetoCod);
         } else {
             return null;
         }

@@ -169,13 +169,14 @@ class UsuarioDAO {
         }
     }
 
-    public function RetornarTodosAtivosResumo(string $nome) {
+    public function RetornarTodosAtivosResumo(string $nome, int $projetoCod) {
         try {
-            $sql = "SELECT cod, nome,email, permissao FROM usuario WHERE status = 1 AND nome LIKE :nome ORDER BY nome ASC";
+            $sql = "SELECT u.cod, u.nome, u.email, u.permissao FROM usuario u WHERE u.status = 1 AND u.nome LIKE :nome AND u.cod NOT IN (SELECT p.usuario_cod FROM usuario_projeto p WHERE p.usuario_cod = u.cod AND p.projeto_cod = :pc) ORDER BY u.nome ASC";
             $param = array(
-                ":nome" => "%{$nome}%"
+                ":nome" => "%{$nome}%",
+                ":pc" => $projetoCod
             );
-                
+
             $dt = $this->pdo->ExecuteQuery($sql, $param);
 
             $listaUsuario = [];

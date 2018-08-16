@@ -32,7 +32,8 @@ switch ($req) {
         break;
     case 3:
         $nome = filter_input(INPUT_POST, "n", FILTER_SANITIZE_STRING);
+        $projetoCod = filter_input(INPUT_POST, "pc", FILTER_SANITIZE_NUMBER_INT);
         $usuarioController = new UsuarioController();
-        echo json_encode($usuarioController->RetornarTodosAtivosResumo($nome));
+        echo json_encode($usuarioController->RetornarTodosAtivosResumo($nome, $projetoCod));
         break;
 }
