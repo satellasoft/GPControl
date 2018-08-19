@@ -29,4 +29,12 @@ class UsuarioProjetoController {
         }
     }
 
+    public function Remover(int $usuarioCod, int $projetoCod) {
+        if ($usuarioCod > 0 && $projetoCod > 0) {
+            return $this->usuarioProjetoDAO->Remover($usuarioCod, $projetoCod);
+        } else {
+            return false;
+        }
+    }
+
 }

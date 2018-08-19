@@ -71,4 +71,22 @@ class UsuarioProjetoDAO {
         }
     }
 
+    public function Remover(int $usuarioCod, int $projetoCod) {
+        try {
+            $sql = "DELETE FROM usuario_projeto WHERE usuario_cod = :usuariocod AND projeto_cod = :projetocod";
+            $params = array(
+                ":usuariocod" => $usuarioCod,
+                ":projetocod" => $projetoCod
+            );
+
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+
+            return false;
+        }
+    }
+
 }
