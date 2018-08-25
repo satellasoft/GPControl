@@ -152,4 +152,32 @@ class ProjetoDAO {
         }
     }
 
+    public function RetornaProjetosUsuario(int $usuarioCod) {
+        try {
+            $sql = "SELECT p.cod, p.nome, p.thumb, p.data, p.status FROM projeto p INNER JOIN usuario_projeto up WHERE up.projeto_cod = p.cod AND up.usuario_cod = :usuariocod";
+            $param = array(":usuariocod" => $usuarioCod);
+
+            $dt = $this->pdo->ExecuteQuery($sql, $param);
+            $listaProjeto = [];
+
+            foreach ($dt as $dr) {
+                $projeto = new Projeto();
+                $projeto->setCod($dr["cod"]);
+                $projeto->setNome($dr["nome"]);
+                $projeto->setThumb($dr["thumb"]);
+                $projeto->setData($dr["data"]);
+                $projeto->setStatus($dr["status"]);
+
+                $listaProjeto[] = $projeto;
+            }
+
+            return $listaProjeto;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
 }

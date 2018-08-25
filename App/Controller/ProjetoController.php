@@ -64,6 +64,14 @@ class ProjetoController {
         }
     }
 
+    public function RetornaProjetosUsuario(int $usuarioCod) {
+        if ($usuarioCod > 0) {
+            return $this->projetoDAO->RetornaProjetosUsuario($usuarioCod);
+        } else {
+            return null;
+        }
+    }
+
 }
 
 ?>

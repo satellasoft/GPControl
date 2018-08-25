@@ -14,6 +14,7 @@ $arrayPaginas = array(
     //Projetos
     "gprojeto" => "View/ProjetoView/GerenciarProjeto.php",
     "gvisualizaprojeto" => "View/ProjetoView/VisualizarProjeto.php",
+    "mprojeto" => "View/ProjetoView/ProjetoUsuario.php",
     //Permissões
     "gpermissao" => "View/PermissaoView/GerenciarPermissao.php"
 );
