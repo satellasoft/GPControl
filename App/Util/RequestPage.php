@@ -7,7 +7,7 @@ $pagina = filter_input(INPUT_GET, "p", FILTER_SANITIZE_STRING);
 
 $arrayPaginas = array(
     "home" => "View/home.php", //Página inicial
-    //Usuários
+//Usuários
     "gusuario" => "View/UsuarioView/GerenciarUsuario.php",
     //Categorias
     "gcategoria" => "View/CategoriaView/GerenciarCategoria.php",
@@ -16,7 +16,9 @@ $arrayPaginas = array(
     "gvisualizaprojeto" => "View/ProjetoView/VisualizarProjeto.php",
     "mprojeto" => "View/ProjetoView/ProjetoUsuario.php",
     //Permissões
-    "gpermissao" => "View/PermissaoView/GerenciarPermissao.php"
+    "gpermissao" => "View/PermissaoView/GerenciarPermissao.php",
+    //Módulo
+    "modulo" => "View/ModuloView/GerenciarModulo.php"
 );
 
 if ($pagina) {

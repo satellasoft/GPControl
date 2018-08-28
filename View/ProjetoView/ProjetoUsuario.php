@@ -32,7 +32,7 @@ $listaProjeto = $projetoController->RetornaProjetosUsuario(intval($_SESSION["cod
                     </td>
                     <td><?= date("d/m/Y H:i:s", strtotime($projeto->getData())); ?></td>
                     <td>
-                        <a href='?p=#<?= $projeto->getCod(); ?>' class='btn btn-info' target='_blank'>Acessar</a>
+                        <a href='?p=modulo&pcod=<?= $projeto->getCod(); ?>' class='btn btn-info'>Acessar</a>
                     </td>
                 </tr>
                 <?php
