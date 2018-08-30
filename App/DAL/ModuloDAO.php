@@ -5,6 +5,7 @@ namespace App\DAL;
 use App\DB\Banco;
 use App\Model\Modulo;
 use App\Model\ViewModel\ModuloView\ModuloView;
+use App\Model\ViewModel\ModuloView\ModuloConsultaView;
 
 class ModuloDAO {
 
@@ -40,5 +41,42 @@ class ModuloDAO {
         }
     }
 
+    public function BuscarModulo(string $titulo, int $status, int $categoriaCod, int $quantidade = 10) {
+        try {
+            $sql = "SELECT m.cod as mcod, m.titulo, m.data, u.cod as ucod, u.nome FROM modulo m "
+                    . "INNER JOIN usuario u ON u.cod = m.usuario_cod "
+                    . "WHERE m.titulo LIKE :titulo AND m.status = :status "
+                    . "AND m.categoria_cod = :categoriacod ORDER BY m.data DESC LIMIT :quantidade";
+
+            $params = array(
+                ":titulo" => "%{$titulo}%",
+                ":status" => $status,
+                ":categoriacod" => $categoriaCod,
+                ":quantidade" => $quantidade,
+            );
+
+            $dt = $this->pdo->ExecuteQuery($sql, $params);
+            $listaModulo = [];
+            foreach ($dt as $dr) {
+                $moduloConsultaView = new ModuloConsultaView();
+                $moduloConsultaView->setCod($dr["mcod"]);
+                $moduloConsultaView->setTitulo($dr["titulo"]);
+                $moduloConsultaView->setData($dr["data"]);
+                $moduloConsultaView->setUsuarioCod($dr["ucod"]);
+                $moduloConsultaView->setUsuarioNome($dr["nome"]);
+
+                $listaModulo[] = $moduloConsultaView;
+            }
+
+            return $listaModulo;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
 }
+
 ?>

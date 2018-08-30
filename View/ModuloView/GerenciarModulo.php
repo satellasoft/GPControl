@@ -2,16 +2,18 @@
 
 use App\Controller\CategoriaController;
 use App\Controller\ModuloController;
+use App\Controller\ProjetoController;
 use App\Model\ViewModel\ModuloView\ModuloView;
+use App\Model\ViewModel\ModuloView\ModuloConsultaView;
 
 $pCod = filter_input(INPUT_GET, "pcod", FILTER_SANITIZE_NUMBER_INT); //Código do projeto
 $cod = filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT); //Código do módulo
 
 $categoriaController = new CategoriaController();
 $moduloController = new ModuloController();
+$projetoController = new ProjetoController();
 
-$listaCategorias = $categoriaController->RetornarTodosProjetoCod(intval($pCod));
-
+$usuarioCod = intval($_SESSION["cod"]);
 $titulo = "";
 $status = 1;
 $categoriaCod = "";
@@ -44,18 +46,49 @@ if (filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING)) {
         //Editar
     }
 }
+$listaModulo = [];
+if (filter_input(INPUT_POST, "slStatusBusca")) {
+    $listaModulo = $moduloController->BuscarModulo(
+            filter_input(INPUT_POST, "txtTituloBusca", FILTER_SANITIZE_STRING), filter_input(INPUT_POST, "slStatusBusca", FILTER_SANITIZE_NUMBER_INT), filter_input(INPUT_POST, "slCategoriaBusca", FILTER_SANITIZE_NUMBER_INT), filter_input(INPUT_POST, "slQuantidadeBusca", FILTER_SANITIZE_NUMBER_INT));
+} else {
+    $listaModulo = $moduloController->BuscarModulo("", 1, 1, 10);
+}
+
+$listaCategorias = $categoriaController->RetornarTodosProjetoCod(intval($pCod));
+
+
+$projeto = $projetoController->RetornarCod($pCod);
 ?>
 
 <h1>Gerenciar módulo</h1>
 <button id="btnNovoModulo" class="btn btn-info">Novo módulo</button>
+<button id="btnBuscarModulos" class="btn btn-info">Buscar módulos</button>
 <a href="?p=mprojeto" class="btn btn-dark">Voltar</a>
 <br><br>
+<div class="bg-gray">
+    <div class="grid-50 mobile-grid-100">
+        <p><span class="bold">Projeto: </span><?= $projeto->getNome(); ?></p>
+    </div>
+    <div class="grid-50 mobile-grid-100">
+        <p><span class="bold">Status: </span><?= $projeto->getStatus() == 1 ? "Ativo" : "Bloqueado"; ?></p>
+    </div>
+    <div class="clear"></div>
+    <div class="grid-100">
+        <p><span class="bold">Descrição: </span> <a href="#" id="btnExibirDescricao">Exibir</a></p>
+        <div id="dvExibirDescricao" style="display: none;">
+            <?= html_entity_decode($projeto->getDescricao()); ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
 <div id="dvFrmModulo" <?= ($editando ? "aqui" : "style='display: none;'"); ?>>
     <form method="post" id="frmGerenciarModulo">
         <input type="hidden" id="txtEditando" value="<?= ($editando ? "1" : "0"); ?>" />
         <div>
             <div class="form-group grid-60 mobile-grid-100">
-                <label for="txtNome">Título</label>
+                <label for="txtTitulo">Título</label>
                 <input type="text" class="form-control" id="txtTitulo" name="txtTitulo"  placeholder="Problemas ao gerar um novo certificado" value="<?= $titulo; ?>">
             </div>
 
@@ -103,12 +136,102 @@ if (filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING)) {
         </div>
     </form>
 </div>
+<hr>
+
+<div id="dvBuscarModulos">
+    <h2>Buscar</h2>
+    <form method="post" id="frmBuscar">
+        <div class="form-group grid-40 mobile-grid-100">
+            <label for="txtTituloBusca">Título</label>
+            <input type="text" class="form-control" id="txtTituloBusca" name="txtTituloBusca" >
+        </div>
+
+        <div class="form-group grid-20 mobile-grid-100">
+            <label for="slQuantidadeBusca">Quantidade</label>
+            <select class="custom-select" id="slQuantidadeBusca" name="slQuantidadeBusca">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+            </select>
+        </div>
+
+        <div class="form-group grid-20 mobile-grid-100">
+            <label for="slStatusBusca">Status</label>
+            <select class="custom-select" id="slStatusBusca" name="slStatusBusca">
+                <option value="1" <?= $status == 1 ? "selected" : ""; ?>>Ativo</option>
+                <option value="2" <?= $status == 2 ? "selected" : ""; ?>>Bloqueado</option>
+            </select>
+        </div>
+
+        <div class="form-group grid-20 mobile-grid-100">
+            <label for="slCategoriaBusca">Categoria</label>
+            <select class="custom-select" id="slCategoriaBusca" name="slCategoriaBusca">
+                <?php
+                foreach ($listaCategorias as $categoria) {
+                    ?>
+                    <option value="<?= $categoria->getCod(); ?>" <?= $categoriaCod == $categoria->getCod() ? "selected" : ""; ?>><?= $categoria->getNome(); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+
+        <div class="form-group grid-100 mobile-grid-100">
+            <button type="submit" class="btn btn-success" id="btnBuscar">Buscar</button>
+        </div>
+    </form>
+</div>
+<hr>
+<table class="table table-hover table-striped table-responsive-lg">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Usuário</th>
+            <th>Data publicação</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if (!is_null($listaModulo)) {
+            foreach ($listaModulo as $modulo) {
+                ?>
+                <tr>
+                    <td><?= $modulo->getTitulo(); ?></td>
+                    <td><?= $modulo->getUsuarioNome(); ?></td>
+                    <td><?= date("d/m/Y H:i:s", strtotime($modulo->getData())); ?></td>
+                    <td>
+                        <?php
+                        if ($modulo->getUsuarioCod() == $usuarioCod) {
+                            ?>
+                            <a href='?p=modulo&pcod=33&cod=<?= $codProjeto; ?>' class='btn btn-warning'>Editar</a>
+                            <?php
+                        }
+                        ?>
+                        <a href='?p=visualizarmodulo&cod=<?= $codProjeto; ?>' class='btn btn-primary'>Visualizar</a>
+                    </td>
+                </tr>
+                <?php
+            }
+        }
+        ?>
+    </tbody>
+</table>
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script>
             $(document).ready(function () {
                 CKEDITOR.replace("txtDescricao");
+                  $("#dvBuscarModulos").hide("slow");
+                
                 $("#btnNovoModulo").click(function () {
                     $("#dvFrmModulo").toggle("slow");
+                });
+
+                $("#btnBuscarModulos").click(function () {
+                    $("#dvBuscarModulos").toggle("slow");
                 });
 
                 var result = getCookie("result");
@@ -124,6 +247,19 @@ if (filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING)) {
                 } else if (result == "e2") {
                     ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Projeto.</span>");
                 }
+
+                var visible = false;
+                $("#btnExibirDescricao").click(function () {
+                    $("#dvExibirDescricao").slideToggle("slow");
+
+                    visible = !visible;
+
+                    if (visible) {
+                        $("#btnExibirDescricao").text("Ocultar");
+                    } else {
+                        $("#btnExibirDescricao").text("Exibir");
+                    }
+                });
             });
 
             $("#frmGerenciarModulo").submit(function (event) {

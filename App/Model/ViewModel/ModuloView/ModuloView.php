@@ -9,6 +9,7 @@ class ModuloView {
     private $status;
     private $data;
     private $usuarioCod;
+    private $usuarioNome;
     private $categoriaCod;
     private $projetoCod;
 
@@ -75,5 +76,12 @@ class ModuloView {
     function setProjetoCod($projetoCod) {
         $this->projetoCod = $projetoCod;
     }
+    
+    function getUsuarioNome() {
+        return $this->usuarioNome;
+    }
 
+    function setUsuarioNome($usuarioNome) {
+        $this->usuarioNome = $usuarioNome;
+    }
 }
