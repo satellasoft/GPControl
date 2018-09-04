@@ -18,11 +18,23 @@ class ModuloController {
     public function Cadastrar(ModuloView $modulo) {
 
         if (strlen($modulo->getTitulo()) >= 5 && strlen($modulo->getTitulo()) <= 200 &&
-                $modulo->getCategoriaCod() > 0 && $modulo->getProjetoCod() > 0 && 
+                $modulo->getCategoriaCod() > 0 && $modulo->getProjetoCod() > 0 &&
                 $modulo->getUsuarioCod() > 0 &&
                 $modulo->getStatus() >= 1 && $modulo->getStatus() <= 2 &&
                 strlen($modulo->getDescricao()) >= 5) {
             return $this->moduloDAO->Cadastrar($modulo);
+        } else {
+            return false;
+        }
+    }
+
+    public function Alterar(ModuloView $modulo) {
+        if (strlen($modulo->getTitulo()) >= 5 && strlen($modulo->getTitulo()) <= 200 &&
+                $modulo->getCategoriaCod() > 0 && $modulo->getProjetoCod() > 0 &&
+                $modulo->getStatus() >= 1 && $modulo->getStatus() <= 2 &&
+                strlen($modulo->getDescricao()) >= 5 &&
+                $modulo->getCod() > 0) {
+            return $this->moduloDAO->Alterar($modulo);
         } else {
             return false;
         }
@@ -33,6 +45,22 @@ class ModuloController {
                 $categoriaCod > 0 &&
                 $quantidade >= 10 && $quantidade <= 200) {
             return $this->moduloDAO->BuscarModulo($titulo, $status, $categoriaCod, $quantidade);
+        } else {
+            return null;
+        }
+    }
+
+    function RetornaCod(int $usuarioCod, int $cod) {
+        if ($usuarioCod > 0 && $cod > 0) {
+            return $this->moduloDAO->RetornaCod($usuarioCod, $cod);
+        } else {
+            return null;
+        }
+    }
+
+    public function RetornarCompletoCod(int $cod) {
+        if ($cod > 0) {
+            return $this->moduloDAO->RetornarCompletoCod($cod);
         } else {
             return null;
         }

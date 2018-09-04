@@ -18,7 +18,8 @@ $arrayPaginas = array(
     //Permissões
     "gpermissao" => "View/PermissaoView/GerenciarPermissao.php",
     //Módulo
-    "modulo" => "View/ModuloView/GerenciarModulo.php"
+    "modulo" => "View/ModuloView/GerenciarModulo.php",
+    "visualizarmodulo" => "View/ModuloView/VisualizarModulo.php",
 );
 
 if ($pagina) {

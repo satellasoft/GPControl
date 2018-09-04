@@ -11,8 +11,17 @@ class ModuloView {
     private $usuarioCod;
     private $usuarioNome;
     private $categoriaCod;
+    private $categoriaNome;
     private $projetoCod;
 
+    function getCategoriaNome() {
+        return $this->categoriaNome;
+    }
+
+    function setCategoriaNome($categoriaNome) {
+        $this->categoriaNome = $categoriaNome;
+    }
+    
     function getCod() {
         return $this->cod;
     }

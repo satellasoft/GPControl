@@ -41,6 +41,27 @@ class ModuloDAO {
         }
     }
 
+    public function Alterar(ModuloView $modulo) {
+        try {
+            $sql = "UPDATE modulo "
+                    . "SET titulo = :titulo, descricao = :descricao, status = :status, categoria_cod = :categoriacod WHERE cod = :cod";
+            $params = array(
+                ":titulo" => $modulo->getTitulo(),
+                ":descricao" => $modulo->getDescricao(),
+                ":status" => $modulo->getStatus(),
+                ":categoriacod" => $modulo->getCategoriaCod(),
+                ":cod" => $modulo->getCod()
+            );
+
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return false;
+        }
+    }
+
     public function BuscarModulo(string $titulo, int $status, int $categoriaCod, int $quantidade = 10) {
         try {
             $sql = "SELECT m.cod as mcod, m.titulo, m.data, u.cod as ucod, u.nome FROM modulo m "
@@ -69,6 +90,60 @@ class ModuloDAO {
             }
 
             return $listaModulo;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
+    function RetornaCod(int $usuarioCod, int $cod) {
+        try {
+            $sql = "SELECT titulo, descricao, status, categoria_cod FROM modulo WHERE cod = :cod AND usuario_cod = :usuariocod";
+            $params = array(
+                ":cod" => $cod,
+                ":usuariocod" => $usuarioCod
+            );
+
+            $dr = $this->pdo->ExecuteQueryOneRow($sql, $params);
+
+            $moduloView = new ModuloView();
+            $moduloView->setTitulo($dr["titulo"]);
+            $moduloView->setDescricao($dr["descricao"]);
+            $moduloView->setCategoriaCod($dr["categoria_cod"]);
+            $moduloView->setStatus($dr["status"]);
+
+            return $moduloView;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
+    public function RetornarCompletoCod(int $cod) {
+        try {
+            $sql = "SELECT m.titulo, m.descricao, m.status, m.data, u.nome as usuarionome, c.nome as categorianome "
+                    . "FROM modulo m INNER JOIN usuario u ON u.cod = m.usuario_cod "
+                    . "INNER JOIN categoria c ON c.cod = m.categoria_cod WHERE m.cod = :cod";
+            $param = array(
+                ":cod" => $cod
+            );
+
+            $dr = $this->pdo->ExecuteQueryOneRow($sql, $param);
+            $moduloView = new ModuloView();
+            
+            $moduloView->setTitulo($dr["titulo"]);
+            $moduloView->setDescricao($dr["descricao"]);
+            $moduloView->setStatus($dr["status"]);
+            $moduloView->setData($dr["data"]);
+            
+            $moduloView->setUsuarioNome($dr["usuarionome"]);
+            $moduloView->setCategoriaNome($dr["categorianome"]);
+            
+            return $moduloView;
         } catch (PDOException $ex) {
             if ($this->debug) {
                 echo "ERRO: {$ex->getMessage()}";

@@ -19,9 +19,12 @@ $status = 1;
 $categoriaCod = "";
 $descricao = "";
 $editando = false;
+$result = "Preencha corretamente todos os campos";
 
 if (filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING)) {
     $moduloView = new ModuloView();
+
+    $moduloView->setCod($cod);
     $moduloView->setTitulo(filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING));
     $moduloView->setStatus(filter_input(INPUT_POST, "slStatus", FILTER_SANITIZE_NUMBER_INT));
     $moduloView->setDescricao(filter_input(INPUT_POST, "txtDescricao", FILTER_SANITIZE_SPECIAL_CHARS));
@@ -44,8 +47,20 @@ if (filter_input(INPUT_POST, "txtTitulo", FILTER_SANITIZE_STRING)) {
         <?php
     } else {
         //Editar
+        $result = "e1";
+        if (!$moduloController->Alterar($moduloView)) {
+            $result = "e2";
+        }
+        ?>
+        <script>
+            setCookie("result", "<?= $result; ?>", 1);
+            document.location.href = "?p=modulo&pcod=<?= $pCod ?>";
+        </script>
+        <?php
     }
 }
+
+//Lista de busca
 $listaModulo = [];
 if (filter_input(INPUT_POST, "slStatusBusca")) {
     $listaModulo = $moduloController->BuscarModulo(
@@ -54,10 +69,26 @@ if (filter_input(INPUT_POST, "slStatusBusca")) {
     $listaModulo = $moduloController->BuscarModulo("", 1, 1, 10);
 }
 
+//Lista de categorias
 $listaCategorias = $categoriaController->RetornarTodosProjetoCod(intval($pCod));
 
 
+//Retorna as informações do projeto
 $projeto = $projetoController->RetornarCod($pCod);
+
+if ($cod) {
+    $modulo = $moduloController->RetornaCod($usuarioCod, $cod);
+    $editando = true;
+
+    if ($modulo->getTitulo() != null) {
+        $titulo = $modulo->getTitulo();
+        $status = $modulo->getStatus();
+        $categoriaCod = $modulo->getCategoriacod();
+        $descricao = $modulo->getDescricao();
+    } else {
+        $result = "Não foi possível carregar as informações do módulo";
+    }
+}
 ?>
 
 <h1>Gerenciar módulo</h1>
@@ -124,7 +155,7 @@ $projeto = $projetoController->RetornarCod($pCod);
         </div>
         <div>
             <div class="form-group grid-60 mobile-grid-100">
-                <div class="alert alert-warning" id="dvResult">Preencha corretamente todos os campos</div>
+                <div class="alert alert-warning" id="dvResult"><?= $result; ?></div>
             </div>
             <div class="form-group grid-40 mobile-grid-100">
                 <button type="submit" class="btn btn-success" id="btnCadastrar"><?= $editando ? "Editar" : "Cadastrar" ?></button>
@@ -207,11 +238,11 @@ $projeto = $projetoController->RetornarCod($pCod);
                         <?php
                         if ($modulo->getUsuarioCod() == $usuarioCod) {
                             ?>
-                            <a href='?p=modulo&pcod=33&cod=<?= $codProjeto; ?>' class='btn btn-warning'>Editar</a>
+                            <a href='?p=modulo&pcod=<?= $pCod; ?>&cod=<?= $modulo->getCod(); ?>' class='btn btn-warning'>Editar</a>
                             <?php
                         }
                         ?>
-                        <a href='?p=visualizarmodulo&cod=<?= $codProjeto; ?>' class='btn btn-primary'>Visualizar</a>
+                        <a href='?p=visualizarmodulo&cod=<?= $modulo->getCod(); ?>' class='btn btn-primary' target="_blank">Visualizar</a>
                     </td>
                 </tr>
                 <?php
@@ -222,83 +253,81 @@ $projeto = $projetoController->RetornarCod($pCod);
 </table>
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script>
-            $(document).ready(function () {
-                CKEDITOR.replace("txtDescricao");
-                  $("#dvBuscarModulos").hide("slow");
-                
-                $("#btnNovoModulo").click(function () {
-                    $("#dvFrmModulo").toggle("slow");
-                });
+    $(document).ready(function () {
+        CKEDITOR.replace("txtDescricao");
+        $("#dvBuscarModulos").hide("slow");
 
-                $("#btnBuscarModulos").click(function () {
-                    $("#dvBuscarModulos").toggle("slow");
-                });
+        $("#btnNovoModulo").click(function () {
+            $("#dvFrmModulo").toggle("slow");
+        });
 
-                var result = getCookie("result");
-                DeleteCookie("result");
-                if (result == "c1") {
-                    ShowModal("Sucesso", "<span class='text-success'>Módulo criado com sucesso.</span>");
-                } else if (result == "c2") {
-                    ShowModal("Erro", "<span class='text-success'>Não foi possível criar um novo módulo.</span>");
-                } else if (result == "c3") {
-                    ShowModal("Erro", "<span class='text-success'>Não foi possível fazer o upload da imagem.</span>");
-                } else if (result == "e1") {
-                    ShowModal("Sucesso", "<span class='text-success'>Projeto alterado com sucesso.</span>");
-                } else if (result == "e2") {
-                    ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Projeto.</span>");
-                }
+        $("#btnBuscarModulos").click(function () {
+            $("#dvBuscarModulos").toggle("slow");
+        });
 
-                var visible = false;
-                $("#btnExibirDescricao").click(function () {
-                    $("#dvExibirDescricao").slideToggle("slow");
+        var result = getCookie("result");
+        DeleteCookie("result");
+        if (result == "c1") {
+            ShowModal("Sucesso", "<span class='text-success'>Módulo criado com sucesso.</span>");
+        } else if (result == "c2") {
+            ShowModal("Erro", "<span class='text-success'>Não foi possível criar um novo módulo.</span>");
+        } else if (result == "e1") {
+            ShowModal("Sucesso", "<span class='text-success'>Módulo alterado com sucesso.</span>");
+        } else if (result == "e2") {
+            ShowModal("Erro", "<span class='text-success'>Não foi possível alterar o Módulo.</span>");
+        }
 
-                    visible = !visible;
+        var visible = false;
+        $("#btnExibirDescricao").click(function () {
+            $("#dvExibirDescricao").slideToggle("slow");
 
-                    if (visible) {
-                        $("#btnExibirDescricao").text("Ocultar");
-                    } else {
-                        $("#btnExibirDescricao").text("Exibir");
-                    }
-                });
-            });
+            visible = !visible;
 
-            $("#frmGerenciarModulo").submit(function (event) {
-                if (!Validar()) {
-                    event.preventDefault();
-                }
-            });
-
-            function Validar() {
-                var erros = 0;
-                var ulErros = document.getElementById("ulErros");
-                ulErros.innerHTML = "";
-
-                if ($("#txtTitulo").val().length < 5 || $("#txtTitulo").val().length > 200) {
-                    var li = document.createElement("li");
-                    li.innerHTML = "- Informe um título válido. (min. 5 e max. 200 caracteres)";
-                    ulErros.appendChild(li);
-                    erros++;
-                }
-
-                if ($("#slCategoria").val() == "") {
-                    var li = document.createElement("li");
-                    li.innerHTML = "- Selecione uma categoria";
-                    ulErros.appendChild(li);
-                    erros++;
-                }
-
-                var value = CKEDITOR.instances['txtDescricao'].getData();
-                if (value.length < 5) {
-                    var li = document.createElement("li");
-                    li.innerHTML = "- Informe uma descrição. (min. 5 caracteres)";
-                    ulErros.appendChild(li);
-                    erros++;
-                }
-
-                if (erros == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (visible) {
+                $("#btnExibirDescricao").text("Ocultar");
+            } else {
+                $("#btnExibirDescricao").text("Exibir");
             }
+        });
+    });
+
+    $("#frmGerenciarModulo").submit(function (event) {
+        if (!Validar()) {
+            event.preventDefault();
+        }
+    });
+
+    function Validar() {
+        var erros = 0;
+        var ulErros = document.getElementById("ulErros");
+        ulErros.innerHTML = "";
+
+        if ($("#txtTitulo").val().length < 5 || $("#txtTitulo").val().length > 200) {
+            var li = document.createElement("li");
+            li.innerHTML = "- Informe um título válido. (min. 5 e max. 200 caracteres)";
+            ulErros.appendChild(li);
+            erros++;
+        }
+
+        if ($("#slCategoria").val() == "") {
+            var li = document.createElement("li");
+            li.innerHTML = "- Selecione uma categoria";
+            ulErros.appendChild(li);
+            erros++;
+        }
+
+        var value = CKEDITOR.instances['txtDescricao'].getData();
+        if (value.length < 5) {
+            var li = document.createElement("li");
+            li.innerHTML = "- Informe uma descrição. (min. 5 caracteres)";
+            ulErros.appendChild(li);
+            erros++;
+        }
+
+        if (erros == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 </script>

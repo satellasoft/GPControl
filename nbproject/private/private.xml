@@ -4,8 +4,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Controller/ModuloController.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/ProjetoView/GerenciarProjeto.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Model/ViewModel/ModuloView/ModuloView.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/DAL/ModuloDAO.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/ModuloView/GerenciarModulo.php</file>
         </group>
