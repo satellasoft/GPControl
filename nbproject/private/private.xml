@@ -5,7 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/Controller/ModuloController.php</file>
             <file>file:/C:/xampp/htdocs/GerenciarProjeto/App/DAL/ModuloDAO.php</file>
-            <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/ModuloView/GerenciarModulo.php</file>
+            <file>file:/C:/xampp/htdocs/GerenciarProjeto/View/ModuloView/VisualizarModulo.php</file>
         </group>
     </open-files>
 </project-private>
