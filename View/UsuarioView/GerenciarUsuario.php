@@ -192,5 +192,4 @@ if (filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT)) {
     </div>
 </div>
 
-<script src="js/gerencia-usuario-script.js" type="text/javascript"></script>
-<!--<script src="js/gerencia-usuario-script.min.js" type="text/javascript"></script>-->
+<script src="js/gerencia-usuario-script.min.js" type="text/javascript"></script>

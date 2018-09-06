@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 class MailSend {
 
     const host = "";
-    const port = "";
+    const port = "465";
     const user = "";
     const pass = "";
     

@@ -66,6 +66,22 @@ class ModuloController {
         }
     }
 
+    public function MarcarComoResolvido(int $moduloCod, int $usuarioCod) {
+        if ($moduloCod > 0 && $usuarioCod > 0) {
+            return $this->moduloDAO->MarcarComoResolvido($moduloCod, $usuarioCod);
+        } else {
+            return false;
+        }
+    }
+
+    public function RetornaModulosAberto(int $usuarioCod) {
+        if ($usuarioCod > 0) {
+            return $this->moduloDAO->RetornaModulosAberto($usuarioCod);
+        } else {
+            return null;
+        }
+    }
+
 }
 
 ?>   

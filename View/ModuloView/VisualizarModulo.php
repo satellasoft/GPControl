@@ -8,6 +8,8 @@ use App\Util\MailSend;
 $sendMailNotification = true;
 
 $cod = filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT); //Módulo cod
+$usuarioCod = intval($_SESSION["cod"]);
+
 $moduloController = new ModuloController();
 $respostaController = new RespostaController();
 
@@ -18,7 +20,7 @@ $modulo = $moduloController->RetornarCompletoCod(intval($cod));
 if (filter_input(INPUT_POST, "txtResposta")) {
     $respostaView = new RespostaView();
     $respostaView->setDescricao(filter_input(INPUT_POST, "txtResposta", FILTER_SANITIZE_SPECIAL_CHARS));
-    $respostaView->setUsuarioCod(intval($_SESSION["cod"]));
+    $respostaView->setUsuarioCod($usuarioCod);
     $respostaView->setModuloCod($cod);
 
     $result = "c2";
@@ -57,7 +59,7 @@ if ($modulo != null && $modulo->getTitulo() != null) {
         <p>
             <span class="bold">Criado por: </span> <?= $modulo->getUsuarioNome(); ?> 
             <span class="bold">Data de criação: </span> <?= date("d/m/Y H:i:s", strtotime($modulo->getData())); ?> 
-            <span class="bold">Status: </span> <?= $modulo->getStatus() == 1 ? "Ativo" : "Bloqueado"; ?> 
+            <span class="bold">Status: </span> <?= $modulo->getStatus() == 2 ? "<span class='resolvido'>Resolvido</span>" : "Ativo" ?>
             <span class="bold">Categoria: </span> <?= $modulo->getCategoriaNome(); ?>             
         </p>
 
@@ -66,14 +68,24 @@ if ($modulo != null && $modulo->getTitulo() != null) {
         </div>
 
         <!--Exibe o formulário de resposta.-->
-        <button id="btnComentar" class="btn btn-outline-dark">Comentar</button>
-        <div id="dvFormulario">
-            <form method="post" id="frmResposta">
-                <textarea id="txtResposta" name="txtResposta"></textarea>
-                <button type="submit" class="btn btn-success" style="margin-top: 5px;">Responder</button>
-            </form>
-        </div>
-        <br>    <br>
+        <?php
+        if ($usuarioCod == $modulo->getusuarioCod() && $modulo->getStatus() == 1) {
+            ?>
+            <button id="btnComentar" class="btn btn-outline-dark">Comentar</button>
+            <button class="btn btn-outline-danger" onclick="MarcarComoResolvido();" id="btnResolvido">Marcar como resolvido</button>
+            <input type="hidden" id="txtUserCod" value="<?= $usuarioCod; ?>" />
+            <input type="hidden" id="txtModuloCod" value="<?= $cod; ?>" />
+
+            <div id="dvFormulario">
+                <form method="post" id="frmResposta">
+                    <textarea id="txtResposta" name="txtResposta"></textarea>
+                    <button type="submit" class="btn btn-success" style="margin-top: 5px;">Responder</button>
+                </form>
+            </div>
+            <br>    <br>
+            <?php
+        }
+        ?>
         <!--Conteúdo para mostrar os comentários resposta do módulos.-->
         <div id="dvComentarios">
             <!------>
@@ -98,46 +110,10 @@ if ($modulo != null && $modulo->getTitulo() != null) {
         </div>
     </div>
     <script src="<?= $base; ?>js/highlight/highlight.pack.js"></script>
+    <script src="<?= $base; ?>ckeditor/ckeditor.js"></script>
+    <script src="<?= $base; ?>js/gerenciar-modulo-script.js"></script>
+
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="<?= $base; ?>ckeditor/ckeditor.js" type="text/javascript"></script>
-    <script>
-        $(document).ready(function () {
-            CKEDITOR.replace("txtResposta");
-            $("#dvFormulario").hide();
-
-            var result = getCookie("result");
-            DeleteCookie("result");
-            if (result == "c1") {
-                ShowModal("Sucesso", "<span class='text-success'>Resposta enviada com sucesso.</span>");
-            } else if (result == "c2") {
-                ShowModal("Erro", "<span class='text-success'>Não foi possível enviar a sua resposta.</span>");
-            }
-
-            $("#btnComentar").click(function () {
-                $("#btnComentar").hide();
-                $("#dvFormulario").toggle("fast");
-            });
-
-
-            //Enviar o formulário
-            $("#frmResposta").submit(function (e) {
-                if (!ValidarComentario()) {
-                    e.preventDefault();
-                    ShowModal("Inválido", "<span class='text-warning'>Seu comentário deve conter no minímo 5 caracteres.</span>");
-                }
-            });
-
-        });
-
-        function ValidarComentario() {
-            var valido = true;
-            var value = CKEDITOR.instances['txtResposta'].getData();
-            if (value.length <= 5) {
-                valido = false;
-            }
-            return valido;
-        }
-    </script>
     <?php
 } else {
     ?>

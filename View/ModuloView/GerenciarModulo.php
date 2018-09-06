@@ -127,7 +127,6 @@ if ($cod) {
                 <label for="slStatus">Status</label>
                 <select class="custom-select" id="slStatus" name="slStatus">
                     <option value="1" <?= $status == 1 ? "selected" : ""; ?>>Ativo</option>
-                    <option value="2" <?= $status == 2 ? "selected" : ""; ?>>Bloqueado</option>
                 </select>
             </div>
 
@@ -193,7 +192,7 @@ if ($cod) {
             <label for="slStatusBusca">Status</label>
             <select class="custom-select" id="slStatusBusca" name="slStatusBusca">
                 <option value="1" <?= $status == 1 ? "selected" : ""; ?>>Ativo</option>
-                <option value="2" <?= $status == 2 ? "selected" : ""; ?>>Bloqueado</option>
+                <option value="2" <?= $status == 2 ? "selected" : ""; ?>>Resolvido</option>
             </select>
         </div>
 

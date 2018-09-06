@@ -6,6 +6,7 @@ use App\DB\Banco;
 use App\Model\Modulo;
 use App\Model\ViewModel\ModuloView\ModuloView;
 use App\Model\ViewModel\ModuloView\ModuloConsultaView;
+use App\Model\ViewModel\ModuloView\ModuloAbertoView;
 
 class ModuloDAO {
 
@@ -125,7 +126,7 @@ class ModuloDAO {
 
     public function RetornarCompletoCod(int $cod) {
         try {
-            $sql = "SELECT m.titulo, m.descricao, m.status, m.data, u.nome as usuarionome, c.nome as categorianome "
+            $sql = "SELECT m.titulo, m.descricao, m.status, m.data, u.nome as usuarionome, m.usuario_cod as ucod, c.nome as categorianome "
                     . "FROM modulo m INNER JOIN usuario u ON u.cod = m.usuario_cod "
                     . "INNER JOIN categoria c ON c.cod = m.categoria_cod WHERE m.cod = :cod";
             $param = array(
@@ -134,16 +135,90 @@ class ModuloDAO {
 
             $dr = $this->pdo->ExecuteQueryOneRow($sql, $param);
             $moduloView = new ModuloView();
-            
+
             $moduloView->setTitulo($dr["titulo"]);
             $moduloView->setDescricao($dr["descricao"]);
             $moduloView->setStatus($dr["status"]);
             $moduloView->setData($dr["data"]);
-            
+
+            $moduloView->setUsuarioCod($dr["ucod"]);
             $moduloView->setUsuarioNome($dr["usuarionome"]);
             $moduloView->setCategoriaNome($dr["categorianome"]);
-            
+
             return $moduloView;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
+    public function MarcarComoResolvido(int $moduloCod, int $usuarioCod) {
+        try {
+            $sql = "UPDATE modulo SET status = 2 WHERE cod = :modulocod AND usuario_cod = :usuariocod";
+            $params = array(
+                ":modulocod" => $moduloCod,
+                ":usuariocod" => $usuarioCod
+            );
+
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return false;
+        }
+    }
+
+    public function RetornaModulosAberto(int $usuarioCod) {
+        try {
+            $sql = "SELECT " .
+                    "m.titulo, " .
+                    "m.data, " .
+                    "c.nome AS cnome, " .
+                    "u.nome AS unome, " .
+                    "p.nome AS pnome, " .
+                    "(SELECT count(resposta.cod) FROM resposta WHERE modulo_cod = m.cod) as respostas " .
+                    "FROM " .
+                    "modulo m " .
+                    "INNER JOIN usuario u ON " .
+                    "u.cod = m.usuario_cod " .
+                    "INNER JOIN categoria c ON " .
+                    "c.cod = m.categoria_cod " .
+                    "INNER JOIN projeto p ON " .
+                    "p.cod = m.projeto_cod " .
+                    "INNER JOIN usuario_projeto up ON " .
+                    "up.projeto_cod = p.cod AND up.usuario_cod = :usuariocod " .
+                    "WHERE " .
+                    "m.status = 1 " .
+                    "ORDER BY " .
+                    "p.nome, c.nome ASC, " .
+                    "m.data DESC " .
+                    "LIMIT 15";
+
+            $param = array(
+                ":usuariocod" => $usuarioCod
+            );
+
+            $dt = $this->pdo->ExecuteQuery($sql, $param);
+            $listaModulo = [];
+
+            foreach ($dt as $dr) {
+                $moduloAbertoView = new ModuloAbertoView();
+
+                $moduloAbertoView->setTitulo($dr["titulo"]);
+                $moduloAbertoView->setData($dr["data"]);
+                $moduloAbertoView->setRespostas($dr["respostas"]);
+                
+                $moduloAbertoView->setUsuarioNome($dr["unome"]);
+                $moduloAbertoView->setCategoriaNome($dr["cnome"]);
+                $moduloAbertoView->setProjetoNome($dr["pnome"]);
+
+                $listaModulo[] = $moduloAbertoView;
+            }
+
+            return $listaModulo;
         } catch (PDOException $ex) {
             if ($this->debug) {
                 echo "ERRO: {$ex->getMessage()}";
