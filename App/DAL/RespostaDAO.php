@@ -37,7 +37,7 @@ class RespostaDAO {
 
     public function RetornarTodosModuloCod(int $moduloCod) {
         try {
-            $sql = "SELECT u.nome, r.descricao, r.data FROM resposta r INNER JOIN usuario u ON u.cod = r.usuario_cod "
+            $sql = "SELECT u.nome, r.cod, r.descricao, r.data FROM resposta r INNER JOIN usuario u ON u.cod = r.usuario_cod "
                     . "WHERE r.modulo_cod = :modulocod ORDER BY r.data DESC";
             $param = array(
                 ":modulocod" => $moduloCod
@@ -48,6 +48,8 @@ class RespostaDAO {
 
             foreach ($dt as $dr) {
                 $respostaView = new RespostaView();
+                
+                $respostaView->setCod($dr["cod"]);
                 $respostaView->setData($dr["data"]);
                 $respostaView->setDescricao($dr["descricao"]);
                 $respostaView->setUsuarioNome($dr["nome"]);
@@ -56,6 +58,28 @@ class RespostaDAO {
             }
 
             return $listaResposta;
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+    
+    public function RetornarEmailsResposta(int $moduloCod){
+        try{
+            $sql = "SELECT u.email FROM resposta r INNER JOIN usuario u ON u.cod = r.usuario_cod WHERE r.modulo_cod = :modulocod GROUP BY u.cod;";
+            $param = array(
+                ":modulocod" => $moduloCod
+            );
+            
+            $dt = $this->pdo->ExecuteQuery($sql, $param);
+            
+            $listaEmail = [];
+            foreach($dt as $dr){
+              $listaEmail[] = $dr["email"];  
+            }
+            return $listaEmail;
         } catch (PDOException $ex) {
             if ($this->debug) {
                 echo "ERRO: {$ex->getMessage()}";

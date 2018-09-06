@@ -201,4 +201,21 @@ class UsuarioDAO {
         }
     }
 
+    public function AlterarSenha(string $senha, int $usuarioCod) {
+        try {
+            $sql = "UPDATE usuario SET senha = :senha WHERE cod = :cod";
+            $params = array(
+                ":senha" => md5($senha),
+                ":cod" => $usuarioCod
+            );
+            
+            return $this->pdo->ExecuteNonQuery($sql, $params);
+        } catch (PDOException $ex) {
+            if ($this->debug) {
+                echo "ERRO: {$ex->getMessage()}";
+            }
+            return null;
+        }
+    }
+
 }

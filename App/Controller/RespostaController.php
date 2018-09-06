@@ -31,4 +31,12 @@ class RespostaController {
         }
     }
 
+    public function RetornarEmailsResposta(int $moduloCod) {
+        if ($moduloCod > 0) {
+            return $this->respostaDAO->RetornarEmailsResposta($moduloCod);
+        } else {
+            return null;
+        }
+    }
+
 }

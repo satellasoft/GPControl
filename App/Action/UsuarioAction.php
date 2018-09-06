@@ -10,6 +10,7 @@ use App\Util\ClassSerialization;
  * 1 = Realiza uma consulta
  * 2 = Verifica se o e-mail existe
  * 3 = Retorna usuário pelo nome
+ * 4 = Alterar senha
  */
 
 switch ($req) {
@@ -35,5 +36,16 @@ switch ($req) {
         $projetoCod = filter_input(INPUT_POST, "pc", FILTER_SANITIZE_NUMBER_INT);
         $usuarioController = new UsuarioController();
         echo json_encode($usuarioController->RetornarTodosAtivosResumo($nome, $projetoCod));
+        break;
+    case 4:
+        $senha = filter_input(INPUT_POST, "s", FILTER_SANITIZE_STRING);
+        $usuarioCod = filter_input(INPUT_POST, "c", FILTER_SANITIZE_NUMBER_INT);
+        $usuarioController = new UsuarioController();
+        
+        if ($usuarioController->AlterarSenha($senha, $usuarioCod)) {
+            echo 1;
+        } else {
+            echo -1;
+        }
         break;
 }

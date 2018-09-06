@@ -79,4 +79,12 @@ class UsuarioController {
         }
     }
 
+    public function AlterarSenha(string $senha, int $usuarioCod) {
+        if (strlen($senha) >= 7 && $usuarioCod > 0) {
+            return $this->usuarioDAO->AlterarSenha($senha, $usuarioCod);
+        } else {
+            return false;
+        }
+    }
+
 }

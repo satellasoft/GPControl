@@ -3,6 +3,9 @@
 use App\Controller\ModuloController;
 use App\Controller\RespostaController;
 use App\Model\ViewModel\RespostaView\RespostaView;
+use App\Util\MailSend;
+
+$sendMailNotification = true;
 
 $cod = filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT); //Módulo cod
 $moduloController = new ModuloController();
@@ -21,6 +24,17 @@ if (filter_input(INPUT_POST, "txtResposta")) {
     $result = "c2";
     if ($respostaController->Cadastrar($respostaView)) {
         $result = "c1";
+
+        if ($sendMailNotification) {
+
+            $emails = $respostaController->RetornarEmailsResposta($cod);
+
+            if (count($emails) > 1) {
+                $mailSend = new MailSend();
+                $titulo = "Novo comentário em {$modulo->getTitulo()}.";
+                $mailSend->SendMessageMultipleUser($emails, $modulo->getTitulo(), filter_input(INPUT_POST, "txtResposta", FILTER_SANITIZE_SPECIAL_CHARS), $titulo);
+            }
+        }
     }
     ?>
     <script>
@@ -69,13 +83,13 @@ if ($modulo != null && $modulo->getTitulo() != null) {
                     ?>
                     <div class="card">
                         <div class="card-header text-white bg-primary" style="width:100%;">
-                            <span class="bold"><?= $resposta->getUsuarioNome(); ?></span> comentado em <span class="bold"><?= date("d/m/Y H:i:s", strtotime($resposta->getData())); ?></span> 
+                            <span>#<?= $resposta->getCod(); ?></span> <span class="bold"><?= $resposta->getUsuarioNome(); ?></span> comentado em <span class="bold"><?= date("d/m/Y H:i:s", strtotime($resposta->getData())); ?></span> 
                         </div>
-                        <div class="card-body">
+                        <div class="card-body break">
                             <?= html_entity_decode($resposta->getDescricao()); ?>
                         </div>
                     </div>
-            <hr>
+                    <hr>
                     <?php
                 }
             }
@@ -83,6 +97,8 @@ if ($modulo != null && $modulo->getTitulo() != null) {
             <!------>
         </div>
     </div>
+    <script src="<?= $base; ?>js/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <script src="<?= $base; ?>ckeditor/ckeditor.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
@@ -110,6 +126,7 @@ if ($modulo != null && $modulo->getTitulo() != null) {
                     ShowModal("Inválido", "<span class='text-warning'>Seu comentário deve conter no minímo 5 caracteres.</span>");
                 }
             });
+
         });
 
         function ValidarComentario() {

@@ -94,12 +94,6 @@ function Consultar() {
 }
 
 function MontarTabela(data) {
-
-    //result = JSON.parse(data);
-
-    console.log(data);
-    //console.log(result);
-
     var tbody = document.getElementById("tbody");
     tbody.innerHTML = "";
 
@@ -108,7 +102,9 @@ function MontarTabela(data) {
                 "<td>" + data[i].Nome + "</td>" +
                 "<td>" + data[i].Email + "</td>" +
                 "<td>" + data[i].Data + "</td>" +
-                "<td><a href='?p=gusuario&cod=" + data[i].Cod + "' class='btn btn-warning'>Editar</a></td>" +
+                "<td><button onclick='ModalSenha(" + data[i].Cod + ")' class='btn btn-info margin-right'>Alterar senha</button>" +
+                "<a href='?p=gusuario&cod=" + data[i].Cod + "' class='btn btn-warning'>Editar</a>" +
+                "</td>" +
                 "</tr>";
         tbody.innerHTML += d;
     }
@@ -144,7 +140,6 @@ function ValidarEmail() {
                 console.log(erro);
             }
         });
-        console.log(obj);
     } else {
         $("#btnCadastrar").prop("disabled", true);
         $("#txtEmail").css("border", "1px solid red");
@@ -152,6 +147,48 @@ function ValidarEmail() {
     }
 }
 
+function ModalSenha(cod) {
+    $('#modalSenha').modal('show');
+    $("#txtCode").val(cod);
+}
+
+function AlterarSenha() {
+    if ($("#txtNovaSenha").val().length >= 7) {
+        $("#dvResultSenha").text("");
+
+        var obj = {
+            c: $("#txtCode").val(),
+            s: $("#txtNovaSenha").val()
+        };
+
+        $.ajax({
+            url: "App/Action/UsuarioAction.php?req=4",
+            data: obj,
+            type: "post",
+            dataType: "HTML",
+            beforeSend: function () {
+                $("#btnAlterarSenha").prop("disabled", true);
+            },
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    $("#btnAlterarSenha").prop("disabled", false);
+                    $("#dvResultSenha").prop("class", "alert alert-success");
+                    $("#dvResultSenha").text("Senha alterada");
+                    $("#txtNovaSenha").val("");
+                } else {
+                    $("#dvResultSenha").prop("class", "alert alert-danger");
+                    $("#dvResultSenha").text("Não foi possível alterar a senha");
+                }
+            },
+            error: function (erro) {
+                console.log(erro);
+            }
+        });
+    } else {
+        $("#dvResultSenha").text("Senha inválida, minímo 7 caracteres.");
+    }
+}
 
 function ValidateEmail(email)
 {

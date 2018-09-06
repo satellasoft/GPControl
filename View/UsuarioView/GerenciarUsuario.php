@@ -40,7 +40,7 @@ if (filter_input(INPUT_POST, "txtNome", FILTER_SANITIZE_STRING)) {
         }
     } else {
         //Editar
-            if ($usuarioController->Alterar($usuario)) {
+        if ($usuarioController->Alterar($usuario)) {
             ?>
             <script>
                 setCookie("result", "e1", 1);
@@ -168,5 +168,29 @@ if (filter_input(INPUT_GET, "cod", FILTER_SANITIZE_NUMBER_INT)) {
     </tbody>
 </table>
 
+<div class="modal fade" id="modalSenha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alterar senha</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group grid-100">
+                    <label for="txtNovaSenha">Senha</label>
+                    <input type="hidden" id="txtCode"/>
+                    <input type="text" class="form-control" id="txtNovaSenha">
+                </div>
+                <div class="form-group grid-100">
+                    <div class="alert alert-warning" id="dvResultSenha">Preencha corretamente todos os campos</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success" id="btnAlterarSenha" onclick="AlterarSenha();">Alterar senha</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<script src="js/gerencia-usuario-script.min.js" type="text/javascript"></script>
+<script src="js/gerencia-usuario-script.js" type="text/javascript"></script>
+<!--<script src="js/gerencia-usuario-script.min.js" type="text/javascript"></script>-->

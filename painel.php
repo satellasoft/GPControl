@@ -17,6 +17,7 @@ if (!isset($_SESSION["cod"]) || !isset($_SESSION["permissao"])) {
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
         <link rel="shortcut icon" href="img/favicon.ico" />
+        <link rel="stylesheet" href="js/highlight/styles/monokai-sublime.css">
     </head>
     <body>
         <div class="maxWidth content">
