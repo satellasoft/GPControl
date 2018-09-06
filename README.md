@@ -22,8 +22,8 @@ panel.php - Protected page, all other pages and application features here.
 Before starting the application, it is necessary to specify the connection information with the MariaDB database, so access the following file **App\DB\Banco.php**.
 Change the values of the variables according to the specifications of your data server.
 
-**debug** = True or False = Informs whether or not to display errors when display
-**server** = Database server path
-**user** = Database user
-**password** = Database password
-**database** = Name of database
+**debug** = True or False = Informs whether or not to display errors when display  
+**server** = Database server path  
+**user** = Database user  
+**password** = Database password  
+**database** = Name of database  
