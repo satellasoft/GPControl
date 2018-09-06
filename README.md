@@ -42,7 +42,7 @@ Change the following constants according to your server.
 
 ### Default user and password
 After all the settings, it is necessary to run the following SQL in PHPMyAdmin:  
-> INSERT INTO 'user' (' cod', 'name',' email', 'password',' status', 'allow'',' data') VALUES (NULL, 'A dmin', 'admin@admin.com' , 'F6ba855ff45ea7c2734cd54d62d8bb02', '1', '1', '2018-09-06 00:00:00');
+> INSERT INTO 'usuario' ('cod', 'nome', 'email', 'senha', 'status', 'permissao', 'data') VALUES (NULL, 'A	dmin', 'admin@admin.com', 'f6ba855ff45ea7c2734cd54d62d8bb02', '1', '1', '2018-09-06 00:00:00');
 
 **E-mail access:** admin@admin.com  
 **Password:** a12345z, in lowercase  
