@@ -32,6 +32,12 @@ $listaModulosabertos = $moduloController->RetornaModulosAberto(intval($_SESSION[
             <img src="img/icones/projetousuario.png" alt="Meus projetos" />  Meus projetos
         </a>
     </div>
+    
+    <div class="grid-20 mobile-grid-100 margin-5-bottom">
+        <a href="?p=ajuda">
+            <img src="img/icones/ajuda.png" alt="Ajuda" />  Ajuda
+        </a>
+    </div>
 
     <div class="grid-20 mobile-grid-100 margin-5-bottom">
         <a href="logout.php">
@@ -50,6 +56,7 @@ $listaModulosabertos = $moduloController->RetornaModulosAberto(intval($_SESSION[
                 <th>Data</th>
                 <th>Categoria</th>
                 <th>Respostas</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +71,7 @@ $listaModulosabertos = $moduloController->RetornaModulosAberto(intval($_SESSION[
                         <td><?= date("d/m/Y H:i:s", strtotime($modulo->getData())); ?></td>
                         <td><?= $modulo->getCategoriaNome(); ?></td>
                         <td><?= $modulo->getRespostas(); ?></td>
+                        <td><a target="_blank" href="?p=visualizarmodulo&cod=<?= $modulo->getCod(); ?>" class="btn btn-outline-primary">Ir</a></td>
                     </tr>
                     <?php
                 }

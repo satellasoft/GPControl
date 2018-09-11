@@ -4,12 +4,21 @@ namespace App\Model\ViewModel\ModuloView;
 
 class ModuloAbertoView {
 
+    private $cod;
     private $titulo;
     private $data;
     private $usuarioNome;
     private $categoriaNome;
     private $projetoNome;
     private $respostas;
+    
+    function getCod() {
+        return $this->cod;
+    }
+
+    function setCod($cod) {
+        $this->cod = $cod;
+    }
 
     function getTitulo() {
         return $this->titulo;

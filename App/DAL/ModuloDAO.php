@@ -175,6 +175,7 @@ class ModuloDAO {
         try {
             $sql = "SELECT " .
                     "m.titulo, " .
+                    "m.cod as mcod, ".
                     "m.data, " .
                     "c.nome AS cnome, " .
                     "u.nome AS unome, " .
@@ -207,6 +208,7 @@ class ModuloDAO {
             foreach ($dt as $dr) {
                 $moduloAbertoView = new ModuloAbertoView();
 
+                $moduloAbertoView->setCod($dr["mcod"]);
                 $moduloAbertoView->setTitulo($dr["titulo"]);
                 $moduloAbertoView->setData($dr["data"]);
                 $moduloAbertoView->setRespostas($dr["respostas"]);

@@ -1,12 +1,9 @@
 <?php
 
 $pagina = filter_input(INPUT_GET, "p", FILTER_SANITIZE_STRING);
-
-//echo $pagina;
-
-
 $arrayPaginas = array(
     "home" => "View/home.php", //Página inicial
+    "ajuda" => "View/ajuda.php",
 //Usuários
     "gusuario" => "View/UsuarioView/GerenciarUsuario.php",
     //Categorias

@@ -35,35 +35,40 @@ function ValidarComentario() {
 }
 
 function MarcarComoResolvido() {
-    var obj = {
-        u: $("#txtUserCod").val(),
-        m: $("#txtModuloCod").val()
-    };
 
-    $.ajax({
-        url: "App/Action/ModuloAction.php?req=1",
-        data: obj,
-        type: "post",
-        dataType: "html",
-        beforeSend: function () {
-            $("#btnResolvido").prop("disabled", true);
-        },
-        success: function (data) {
-            console.log(data);
-            if (data == 1) {
-                ShowModal("Modificado", "Módulo marcado como resolvido");
-                $("#btnResolvido, #btnComentar, #dvFormulario").css("display", "none");
-            } else {
+    if (confirm("Deseja realmente marcar o módulo como resolvido?")) {
+
+
+        var obj = {
+            u: $("#txtUserCod").val(),
+            m: $("#txtModuloCod").val()
+        };
+
+        $.ajax({
+            url: "App/Action/ModuloAction.php?req=1",
+            data: obj,
+            type: "post",
+            dataType: "html",
+            beforeSend: function () {
+                $("#btnResolvido").prop("disabled", true);
+            },
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    ShowModal("Modificado", "Módulo marcado como resolvido");
+                    $("#btnResolvido, #btnComentar, #dvFormulario").css("display", "none");
+                } else {
+                    ShowErrorMessage();
+                }
+            },
+            error: function (error) {
+                console.log(error);
                 ShowErrorMessage();
             }
-        },
-        error: function (error) {
-            console.log(error);
-            ShowErrorMessage();
-        }
-    });
+        });
 
-    function ShowErrorMessage() {
-        ShowModal("Erro", "Não foi possível marcar o módulo como resolvido");
+        function ShowErrorMessage() {
+            ShowModal("Erro", "Não foi possível marcar o módulo como resolvido");
+        }
     }
 }
