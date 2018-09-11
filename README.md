@@ -15,8 +15,8 @@ Para o manual em português, consulte o arquivo Instalação.pdf
 ## Installation
 
 ### Pages
-index.php - Page for the user to authenticate.
-panel.php - Protected page, all other pages and application features here.
+**index.php** - Page for the user to authenticate.  
+**panel.php** - Protected page, all other pages and application features here.  
 
 ### Database
 Before starting the application, it is necessary to specify the connection information with the MariaDB database, so access the following file **App\DB\Banco.php**.
