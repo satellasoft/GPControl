@@ -86,6 +86,7 @@ class ModuloDAO {
                 $moduloConsultaView->setData($dr["data"]);
                 $moduloConsultaView->setUsuarioCod($dr["ucod"]);
                 $moduloConsultaView->setUsuarioNome($dr["nome"]);
+                $moduloConsultaView->setStatus($status);
 
                 $listaModulo[] = $moduloConsultaView;
             }

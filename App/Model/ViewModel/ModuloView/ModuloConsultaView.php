@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\ViewModel\ModuloView;
 
 class ModuloConsultaView {
@@ -8,7 +9,16 @@ class ModuloConsultaView {
     private $data;
     private $usuarioCod;
     private $usuarioNome;
-    
+    private $status;
+
+    function getStatus() {
+        return $this->status;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
+    }
+
     function getCod() {
         return $this->cod;
     }
@@ -48,4 +58,5 @@ class ModuloConsultaView {
     function setUsuarioNome($usuarioNome) {
         $this->usuarioNome = $usuarioNome;
     }
+
 }

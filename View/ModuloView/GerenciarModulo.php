@@ -235,7 +235,7 @@ if ($cod) {
                     <td><?= date("d/m/Y H:i:s", strtotime($modulo->getData())); ?></td>
                     <td>
                         <?php
-                        if ($modulo->getUsuarioCod() == $usuarioCod) {
+                        if ($modulo->getUsuarioCod() == $usuarioCod && $modulo->getStatus() == 1) {
                             ?>
                             <a href='?p=modulo&pcod=<?= $pCod; ?>&cod=<?= $modulo->getCod(); ?>' class='btn btn-warning'>Editar</a>
                             <?php

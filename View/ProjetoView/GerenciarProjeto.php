@@ -107,7 +107,7 @@ if ($statusBusca) {
     $listaProjeto = $projetoController->RetornarTodosStatus($statusBusca);
 }
 ?>
-<h1>Gerenciar projeto</h1>
+<h1>Gerenciar projetos</h1>
 <button id="btnNovoProjeto" class="btn btn-info">Novo projeto</button>
 <a href="?p=home" class="btn btn-dark">Voltar</a>
 <br><br>
