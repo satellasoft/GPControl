@@ -18,6 +18,9 @@ Para o manual em português, consulte o arquivo Instalação.pdf
 **index.php** - Page for the user to authenticate.  
 **panel.php** - Protected page, all other pages and application features here.  
 
+### Autoloader
+Change AutoLoad File in **App\Util\autoloader.php line 2**. Put your path name in **$base** variable. If run in server, set empty value.
+
 ### Database
 Before starting the application, it is necessary to specify the connection information with the MariaDB database, so access the following file **App\DB\Banco.php**.
 Change the values of the variables according to the specifications of your data server.
